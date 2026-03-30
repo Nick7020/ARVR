@@ -1,9 +1,8 @@
 import { useRef, useMemo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, Float, Stars, Torus, Line, OrbitControls } from '@react-three/drei';
+import { useGLTF, Float, Stars, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
-/* ─── Preload ─── */
 useGLTF.preload('/model.glb');
 
 /* ─── Particles ─── */
@@ -29,19 +28,6 @@ function Particles() {
   );
 }
 
-/* ─── Orbit ring ─── */
-function OrbitRing({ radius, speed, color, rx = 0, ry = 0 }) {
-  const ref = useRef();
-  useFrame(({ clock }) => { ref.current.rotation.z = clock.getElapsedTime() * speed; });
-  return (
-    <group ref={ref} rotation={[rx, ry, 0]}>
-      <Torus args={[radius, 0.007, 12, 120]}>
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={4} transparent opacity={0.75} />
-      </Torus>
-    </group>
-  );
-}
-
 /* ─── Horizontal face scan line ─── */
 function ScanLine({ height = 2.5 }) {
   const ref = useRef();
@@ -59,12 +45,10 @@ function ScanLine({ height = 2.5 }) {
   );
 }
 
-/* ─── Targeting reticle (forehead) ─── */
+/* ─── Targeting reticle ─── */
 function Reticle({ position }) {
   const ref = useRef();
-  useFrame(({ clock }) => {
-    ref.current.rotation.z = clock.getElapsedTime() * 0.9;
-  });
+  useFrame(({ clock }) => { ref.current.rotation.z = clock.getElapsedTime() * 0.9; });
   return (
     <group ref={ref} position={position}>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
@@ -106,24 +90,18 @@ function HUDPanel({ position, color, lineCount = 4, w = 0.58, h = 0.4 }) {
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.35}
           transparent opacity={0.5} side={THREE.DoubleSide} />
       </mesh>
-      {/* border */}
-      {[
-        [0, h/2, w, 0.006], [0, -h/2, w, 0.006],
-        [-w/2, 0, 0.006, h], [w/2, 0, 0.006, h],
-      ].map(([x,y,bw,bh],i) => (
+      {[[0,h/2,w,0.006],[0,-h/2,w,0.006],[-w/2,0,0.006,h],[w/2,0,0.006,h]].map(([x,y,bw,bh],i) => (
         <mesh key={i} position={[x,y,0.001]}>
           <planeGeometry args={[bw, bh]} />
           <meshStandardMaterial color={color} emissive={color} emissiveIntensity={6} transparent opacity={0.9} />
         </mesh>
       ))}
-      {/* corner dots */}
       {[[-w/2,h/2],[w/2,h/2],[-w/2,-h/2],[w/2,-h/2]].map(([x,y],i) => (
         <mesh key={i} position={[x,y,0.002]}>
           <circleGeometry args={[0.018, 12]} />
           <meshStandardMaterial color={color} emissive={color} emissiveIntensity={8} transparent opacity={1} />
         </mesh>
       ))}
-      {/* data lines */}
       {lines.map(({ y, len }, i) => (
         <Line key={i}
           points={[[-w/2+0.04, y, 0.002], [-w/2+0.04+len, y, 0.002]]}
@@ -133,7 +111,7 @@ function HUDPanel({ position, color, lineCount = 4, w = 0.58, h = 0.4 }) {
   );
 }
 
-/* ─── AR Glasses overlay ─── */
+/* ─── AR Glasses ─── */
 function ARGlasses({ position }) {
   const ref = useRef();
   useFrame(({ clock }) => {
@@ -142,35 +120,27 @@ function ARGlasses({ position }) {
   });
   return (
     <group ref={ref} position={position}>
-      {/* left frame */}
       <mesh position={[-0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
         <torusGeometry args={[0.2, 0.016, 16, 64]} />
         <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
       </mesh>
-      {/* left glass */}
       <mesh position={[-0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
         <circleGeometry args={[0.184, 64]} />
-        <meshStandardMaterial color="#0ea5e9" emissive="#22d3ee" emissiveIntensity={2}
-          transparent opacity={0.2} metalness={0.5} roughness={0} />
+        <meshStandardMaterial color="#0ea5e9" emissive="#22d3ee" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
       </mesh>
-      {/* right frame */}
       <mesh position={[0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
         <torusGeometry args={[0.2, 0.016, 16, 64]} />
         <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={3} />
       </mesh>
-      {/* right glass */}
       <mesh position={[0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
         <circleGeometry args={[0.184, 64]} />
-        <meshStandardMaterial color="#7c3aed" emissive="#a855f7" emissiveIntensity={2}
-          transparent opacity={0.2} metalness={0.5} roughness={0} />
+        <meshStandardMaterial color="#7c3aed" emissive="#a855f7" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
       </mesh>
-      {/* bridge */}
       <mesh>
         <boxGeometry args={[0.2, 0.018, 0.018]} />
         <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
       </mesh>
-      {/* arms */}
-      {[[-0.56,0,-0.1,0.28],[0.56,0,-0.1,-0.28]].map(([x,y,z,ry],i)=>(
+      {[[-0.56,0,-0.1,0.28],[0.56,0,-0.1,-0.28]].map(([x,y,z,ry],i) => (
         <mesh key={i} position={[x,y,z]} rotation={[0,ry,0]}>
           <boxGeometry args={[0.3, 0.014, 0.014]} />
           <meshStandardMaterial color={i===0?"#22d3ee":"#a855f7"} emissive={i===0?"#22d3ee":"#a855f7"} emissiveIntensity={2} />
@@ -180,10 +150,10 @@ function ARGlasses({ position }) {
   );
 }
 
-/* ─── Neon face outline dots ─── */
+/* ─── Face outline dots ─── */
 function FaceOutlineDots({ points, color }) {
   return points.map(([x,y,z], i) => {
-    const DotMesh = () => {
+    const Dot = () => {
       const r = useRef();
       useFrame(({ clock }) => {
         r.current.material.emissiveIntensity = 3 + Math.sin(clock.getElapsedTime() * 2.5 + i * 0.4) * 1.5;
@@ -195,20 +165,17 @@ function FaceOutlineDots({ points, color }) {
         </mesh>
       );
     };
-    return <DotMesh key={i} />;
+    return <Dot key={i} />;
   });
 }
 
-/* ─── The GLB model + all AR overlays ─── */
+/* ─── Main scene ─── */
 function SceneModel() {
-  const group  = useRef();
+  const group = useRef();
   const { mouse } = useThree();
   const { scene } = useGLTF('/model.glb');
-
-  /* clone so original is untouched */
   const model = useMemo(() => scene.clone(true), [scene]);
 
-  /* compute bounding box to auto-fit */
   const { center, scale: fitScale, top } = useMemo(() => {
     const box = new THREE.Box3().setFromObject(model);
     const size = new THREE.Vector3();
@@ -216,12 +183,11 @@ function SceneModel() {
     const c = new THREE.Vector3();
     box.getCenter(c);
     const maxDim = Math.max(size.x, size.y, size.z);
-    const s = 2.6 / maxDim;          // fit into ~2.6 units
-    const t = (box.max.y - c.y) * s; // top of model after scale
+    const s = 2.6 / maxDim;
+    const t = (box.max.y - c.y) * s;
     return { center: c, scale: s, top: t };
   }, [model]);
 
-  /* enhance model materials with emissive neon tint */
   useEffect(() => {
     model.traverse(child => {
       if (child.isMesh && child.material) {
@@ -242,12 +208,10 @@ function SceneModel() {
     group.current.position.y = Math.sin(t * 0.45) * 0.08;
   });
 
-  /* AR overlay positions relative to model center (after fit-scale) */
-  const glassesY  =  top * 0.38;   // eye level
-  const foreheadY =  top * 0.72;   // forehead
-  const reticleZ  =  0.55;
+  const glassesY  = top * 0.38;
+  const foreheadY = top * 0.72;
+  const reticleZ  = 0.55;
 
-  /* face outline dots — rough oval around face */
   const faceOutline = useMemo(() => {
     const pts = [];
     for (let i = 0; i < 16; i++) {
@@ -259,52 +223,34 @@ function SceneModel() {
 
   return (
     <group ref={group}>
-
-      {/* ── Real 3D model ── */}
       <primitive
         object={model}
         scale={fitScale}
         position={[-center.x * fitScale, -center.y * fitScale, -center.z * fitScale]}
       />
 
-      {/* ── AR Glasses ── */}
       <ARGlasses position={[0, glassesY, reticleZ]} />
-
-      {/* ── Forehead reticle ── */}
       <Reticle position={[0, foreheadY, reticleZ]} />
-
-      {/* ── Face scan sweep ── */}
       <ScanLine height={top * 2.2} />
-
-      {/* ── Neon face outline ── */}
       <FaceOutlineDots points={faceOutline} color="#22d3ee" />
 
-      {/* ── Cheekbone accent lines ── */}
-      {[[-0.5, glassesY * 0.6, reticleZ], [0.5, glassesY * 0.6, reticleZ]].map(([x,y,z],i)=>(
+      {[[-0.5, glassesY * 0.6, reticleZ], [0.5, glassesY * 0.6, reticleZ]].map(([x,y,z],i) => (
         <Line key={i}
           points={[[x, y, z], [x + (i===0?-0.22:0.22), y - 0.08, z - 0.05]]}
           color="#a855f7" lineWidth={1.5} transparent opacity={0.7} />
       ))}
 
-      {/* ── HUD panels ── */}
       <HUDPanel position={[-1.5,  0.3, 0]} color="#22d3ee" lineCount={5} />
       <HUDPanel position={[ 1.5,  0.3, 0]} color="#a855f7" lineCount={4} />
       <HUDPanel position={[-1.45,-0.5, 0]} color="#3b82f6" lineCount={3} w={0.5} h={0.3} />
       <HUDPanel position={[ 1.45,-0.5, 0]} color="#ec4899" lineCount={3} w={0.5} h={0.3} />
 
-      {/* ── Connector lines HUD → face ── */}
       <Line points={[[-1.21, 0.3, 0], [-0.65, glassesY * 0.8, reticleZ * 0.6]]} color="#22d3ee" lineWidth={1} transparent opacity={0.5} />
       <Line points={[[ 1.21, 0.3, 0], [ 0.65, glassesY * 0.8, reticleZ * 0.6]]} color="#a855f7" lineWidth={1} transparent opacity={0.5} />
       <Line points={[[-1.2, -0.5, 0], [-0.5, -0.3, reticleZ * 0.5]]}            color="#3b82f6" lineWidth={1} transparent opacity={0.5} />
       <Line points={[[ 1.2, -0.5, 0], [ 0.5, -0.3, reticleZ * 0.5]]}            color="#ec4899" lineWidth={1} transparent opacity={0.5} />
 
-      {/* ── Orbit rings ── */}
-      <OrbitRing radius={1.6}  speed={0.5}   color="#a855f7" rx={Math.PI/8} />
-      <OrbitRing radius={1.95} speed={-0.35} color="#22d3ee" rx={-Math.PI/6} ry={Math.PI/7} />
-      <OrbitRing radius={1.3}  speed={0.8}   color="#3b82f6" rx={Math.PI/2.5} />
-
-      {/* ── Floating data nodes ── */}
-      {[[-1.8,1.0,0.2,'#22d3ee'],[1.9,0.8,0.1,'#a855f7'],[0.1,top+0.3,-0.2,'#3b82f6'],[-1.7,-0.9,0.1,'#ec4899'],[1.8,-0.8,0.2,'#22d3ee']].map(([x,y,z,c],i)=>{
+      {[[-1.8,1.0,0.2,'#22d3ee'],[1.9,0.8,0.1,'#a855f7'],[0.1,top+0.3,-0.2,'#3b82f6'],[-1.7,-0.9,0.1,'#ec4899'],[1.8,-0.8,0.2,'#22d3ee']].map(([x,y,z,c],i) => {
         const Node = () => {
           const r = useRef();
           useFrame(({ clock }) => {
@@ -324,7 +270,6 @@ function SceneModel() {
   );
 }
 
-/* ─── Canvas export ─── */
 export default function VRModel() {
   return (
     <div className="w-full h-full">
@@ -333,14 +278,13 @@ export default function VRModel() {
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
-        {/* Lighting */}
         <ambientLight intensity={0.8} />
-        <directionalLight position={[0, 3, 5]}   intensity={3.5} color="#ffffff" />
-        <directionalLight position={[-3, 2, 3]}  intensity={2}   color="#ffe0c0" />
-        <directionalLight position={[3, 1, 3]}   intensity={1.5} color="#c0d0ff" />
-        <pointLight       position={[-3, 2, 4]}  intensity={3}   color="#a855f7" />
-        <pointLight       position={[3, -1, 3]}  intensity={2.5} color="#22d3ee" />
-        <spotLight        position={[0, 5, 5]}   intensity={4}   color="#ffe8d0" angle={0.45} penumbra={0.8} />
+        <directionalLight position={[0, 3, 5]}  intensity={3.5} color="#ffffff" />
+        <directionalLight position={[-3, 2, 3]} intensity={2}   color="#ffe0c0" />
+        <directionalLight position={[3, 1, 3]}  intensity={1.5} color="#c0d0ff" />
+        <pointLight       position={[-3, 2, 4]} intensity={3}   color="#a855f7" />
+        <pointLight       position={[3, -1, 3]} intensity={2.5} color="#22d3ee" />
+        <spotLight        position={[0, 5, 5]}  intensity={4}   color="#ffe8d0" angle={0.45} penumbra={0.8} />
 
         <Particles />
         <Stars radius={35} depth={25} count={800} factor={2} fade speed={0.4} />

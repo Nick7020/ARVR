@@ -169,7 +169,8 @@ export default function Hero() {
 
           {/* ── RIGHT: 3D VR Model ── */}
           <motion.div
-            className="flex-1 w-full lg:max-w-[560px] h-[420px] sm:h-[500px] lg:h-[620px] relative"
+            className="w-full lg:flex-1 lg:max-w-[560px] relative"
+            style={{ height: 'clamp(280px, 45vw, 620px)' }}
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -185,7 +186,7 @@ export default function Hero() {
               'bottom-3 left-3 border-b-2 border-l-2 rounded-bl-xl',
               'bottom-3 right-3 border-b-2 border-r-2 rounded-br-xl',
             ].map((cls, i) => (
-              <motion.div key={i} className={`absolute w-6 h-6 border-purple-500/60 ${cls}`}
+              <motion.div key={i} className={`absolute w-5 h-5 border-purple-500/60 ${cls}`}
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }} />
             ))}
@@ -198,9 +199,9 @@ export default function Hero() {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
 
-            {/* HUD labels */}
+            {/* HUD labels — hidden on small screens */}
             <motion.div
-              className="absolute top-5 left-5 z-10 font-mono text-[10px] text-cyan-400/60 leading-5"
+              className="hidden sm:block absolute top-5 left-5 z-10 font-mono text-[10px] text-cyan-400/60 leading-5"
               animate={{ opacity: [0.4, 0.8, 0.4] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
@@ -209,7 +210,7 @@ export default function Hero() {
               <div>RENDER: 120fps</div>
             </motion.div>
             <motion.div
-              className="absolute bottom-5 right-5 z-10 font-mono text-[10px] text-purple-400/60 leading-5 text-right"
+              className="hidden sm:block absolute bottom-5 right-5 z-10 font-mono text-[10px] text-purple-400/60 leading-5 text-right"
               animate={{ opacity: [0.4, 0.8, 0.4] }}
               transition={{ duration: 3, repeat: Infinity, delay: 1 }}
             >

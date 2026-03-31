@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import HackathonTicket from './HackathonTicket';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -346,7 +347,18 @@ export default function RegisterModal({ onClose }) {
   const [form, setForm]       = useState({ name:'', email:'', phone:'', branch:'', collegeName:'', teamName:'', teamMembers:'' });
   const [loading, setLoading] = useState(false);
   const [status, setStatus]   = useState(null);
-  const [launched, setLaunched] = useState(false);
+  const [launched, setLaunched]   = useState(false);
+  const [showTicket, setShowTicket] = useState(false);
+
+  // Show cursor during rocket animation
+  useEffect(() => {
+    if (launched) {
+      document.body.style.cursor = 'auto';
+    } else {
+      document.body.style.cursor = 'none';
+    }
+    return () => { document.body.style.cursor = 'none'; };
+  }, [launched]);
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -396,7 +408,12 @@ export default function RegisterModal({ onClose }) {
     <>
       {/* Rocket launch fullscreen overlay */}
       <AnimatePresence>
-        {launched && <RocketLaunch onDone={onClose} />}
+        {launched && <RocketLaunch onDone={() => { setLaunched(false); setShowTicket(true); }} />}
+      </AnimatePresence>
+
+      {/* Ticket */}
+      <AnimatePresence>
+        {showTicket && <HackathonTicket form={form} onClose={onClose} />}
       </AnimatePresence>
 
       {/* Form modal */}

@@ -38,6 +38,132 @@ export default function Hero() {
       <FloatingCube style={{ width: 25, height: 25, bottom: '20%', left: '18%' }} delay={1} />
 
       <motion.div style={{ y, opacity }} className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10">
+
+        {/* ── COLLEGE BANNER ── */}
+        <motion.div
+          className="w-full flex flex-col items-center justify-center gap-4 mb-8 pt-4"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Logo + Name row */}
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+
+            {/* Logo with spinning ring */}
+            <motion.div className="relative flex-shrink-0">
+              {/* Spinning border ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px dashed rgba(139,92,246,0.5)', margin: -6 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full blur-xl"
+                style={{ background: 'rgba(139,92,246,0.6)', margin: -4 }}
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.9, 0.5] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+              />
+              <img
+                src="/logo.webp"
+                alt="ZIBACAR Logo"
+                className="relative z-10 rounded-full object-contain"
+                style={{
+                  width: 80, height: 80,
+                  border: '2px solid rgba(139,92,246,0.8)',
+                  boxShadow: '0 0 25px rgba(139,92,246,0.7), 0 0 50px rgba(139,92,246,0.3)',
+                }}
+              />
+            </motion.div>
+
+            {/* Text block */}
+            <div className="text-center sm:text-left">
+              {/* Society name */}
+              <motion.p
+                className="text-purple-400/80 text-xs tracking-[0.35em] uppercase font-semibold mb-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                ✦ Zeal Education Society's ✦
+              </motion.p>
+
+              {/* Main college name — BIG with glow */}
+              <motion.div
+                className="relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Glow layer behind text */}
+                <div
+                  className="absolute inset-0 blur-2xl opacity-40 pointer-events-none"
+                  style={{ background: 'linear-gradient(135deg, #a855f7, #3b82f6, #22d3ee)', WebkitBackgroundClip: 'text' }}
+                />
+                <h2
+                  className="relative font-black text-2xl sm:text-3xl md:text-4xl leading-tight"
+                  style={{
+                    background: 'linear-gradient(135deg, #ffffff 0%, #c084fc 40%, #22d3ee 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: 'none',
+                    filter: 'drop-shadow(0 0 12px rgba(139,92,246,0.8))',
+                  }}
+                >
+                  Zeal Institute of Business Administration,
+                </h2>
+                <h2
+                  className="relative font-black text-2xl sm:text-3xl md:text-4xl leading-tight"
+                  style={{
+                    background: 'linear-gradient(135deg, #c084fc 0%, #60a5fa 50%, #22d3ee 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    filter: 'drop-shadow(0 0 12px rgba(34,211,238,0.6))',
+                  }}
+                >
+                  Computer Application and Research
+                </h2>
+              </motion.div>
+
+              {/* ZIBACAR badge + Presents */}
+              <motion.div
+                className="mt-3 flex items-center gap-3 justify-center sm:justify-start"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6, type: 'spring' }}
+              >
+                <motion.span
+                  className="font-black tracking-[0.4em] text-sm px-4 py-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(139,92,246,0.25), rgba(34,211,238,0.15))',
+                    border: '1px solid rgba(139,92,246,0.6)',
+                    color: '#22d3ee',
+                    boxShadow: '0 0 16px rgba(139,92,246,0.4), inset 0 0 12px rgba(139,92,246,0.1)',
+                  }}
+                  animate={{ boxShadow: [
+                    '0 0 10px rgba(139,92,246,0.3)',
+                    '0 0 25px rgba(139,92,246,0.7)',
+                    '0 0 10px rgba(139,92,246,0.3)',
+                  ]}}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  ZIBACAR
+                </motion.span>
+                <span className="text-purple-400/60 text-xs tracking-widest uppercase">Presents</span>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Divider */}
+        <motion.div
+          className="w-full h-px mb-8"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(34,211,238,0.3), transparent)' }}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.6, duration: 1 }}
+        />
+
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 min-h-[80vh]">
 
           {/* ── LEFT: Text content ── */}

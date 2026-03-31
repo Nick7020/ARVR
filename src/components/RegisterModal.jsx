@@ -92,27 +92,109 @@ export default function RegisterModal({ onClose }) {
             {/* Success state */}
             {status?.ok ? (
               <motion.div
-                className="text-center py-10"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
               >
-                <motion.div
-                  className="text-6xl mb-4"
-                  animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }}
-                  transition={{ duration: 0.6 }}
+                {/* Confetti particles */}
+                {Array.from({ length: 20 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-2 h-2 rounded-full pointer-events-none"
+                    style={{
+                      background: ['#a855f7','#3b82f6','#22d3ee','#ec4899','#f59e0b'][i % 5],
+                      left: `${Math.random() * 100}%`,
+                      top: `${Math.random() * 100}%`,
+                    }}
+                    initial={{ opacity: 1, scale: 0, y: 0 }}
+                    animate={{
+                      opacity: [1, 1, 0],
+                      scale: [0, 1.5, 0.5],
+                      y: [0, -(60 + Math.random() * 80)],
+                      x: [(Math.random() - 0.5) * 100],
+                      rotate: [0, 360],
+                    }}
+                    transition={{ duration: 1.5, delay: i * 0.08, ease: 'easeOut' }}
+                  />
+                ))}
+
+                {/* Glowing success ring */}
+                <div className="relative inline-flex items-center justify-center mb-6">
+                  {[60, 80, 100].map((size, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute rounded-full"
+                      style={{ width: size, height: size, border: `1px solid rgba(34,211,238,${0.4 - i * 0.1})` }}
+                      animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+                      transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.3 }}
+                    />
+                  ))}
+                  <motion.div
+                    className="relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-3xl"
+                    style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.3), rgba(34,211,238,0.2))', border: '2px solid rgba(34,211,238,0.6)', boxShadow: '0 0 30px rgba(34,211,238,0.4)' }}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.2 }}
+                  >
+                    🚀
+                  </motion.div>
+                </div>
+
+                {/* Text */}
+                <motion.h3
+                  className="text-2xl font-black mb-2"
+                  style={{ background: 'linear-gradient(135deg, #fff, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  🚀
-                </motion.div>
-                <h3 className="text-xl font-black gradient-text mb-2">You're Registered!</h3>
-                <p className="text-gray-400 text-sm">{status.msg}</p>
+                  You're In! 🎉
+                </motion.h3>
+
+                <motion.p
+                  className="text-gray-400 text-sm mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  {status.msg}
+                </motion.p>
+
+                <motion.p
+                  className="text-purple-400/60 text-xs mb-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  AR/VR Hackathon 2026 · ZIBACAR
+                </motion.p>
+
+                {/* Animated divider */}
+                <motion.div
+                  className="h-px mx-auto mb-6"
+                  style={{ background: 'linear-gradient(90deg, transparent, #a855f7, #22d3ee, transparent)' }}
+                  initial={{ scaleX: 0, width: '80%' }}
+                  animate={{ scaleX: 1, width: '80%' }}
+                  transition={{ delay: 0.9, duration: 0.8 }}
+                />
+
                 <motion.button
                   onClick={onClose}
-                  className="mt-6 px-8 py-3 rounded-xl font-bold text-white text-sm"
+                  className="px-10 py-3 rounded-xl font-bold text-white text-sm relative overflow-hidden group"
                   style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 }}
                 >
-                  Close
+                  <motion.span
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                    style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%)' }}
+                    animate={{ x: ['-100%', '200%'] }}
+                    transition={{ duration: 1, repeat: Infinity, repeatDelay: 1 }}
+                  />
+                  Close ✕
                 </motion.button>
               </motion.div>
             ) : (

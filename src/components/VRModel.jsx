@@ -39,8 +39,8 @@ function ScanLine({ height = 2.5 }) {
   return (
     <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[2.2, 0.022]} />
-      <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={8}
-        transparent opacity={0.22} side={THREE.DoubleSide} />
+          <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={8}
+            transparent opacity={0.22} side={THREE.DoubleSide} />
     </mesh>
   );
 }
@@ -112,43 +112,43 @@ function HUDPanel({ position, color, lineCount = 4, w = 0.58, h = 0.4 }) {
 }
 
 /* ─── AR Glasses ─── */
-function ARGlasses({ position }) {
-  const ref = useRef();
-  useFrame(({ clock }) => {
-    const v = 2.5 + Math.sin(clock.getElapsedTime() * 2.8) * 1.2;
-    ref.current.children.forEach(c => { if (c.material) c.material.emissiveIntensity = v; });
-  });
-  return (
-    <group ref={ref} position={position}>
-      <mesh position={[-0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
-        <torusGeometry args={[0.2, 0.016, 16, 64]} />
-        <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
-      </mesh>
-      <mesh position={[-0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
-        <circleGeometry args={[0.184, 64]} />
-        <meshStandardMaterial color="#0ea5e9" emissive="#22d3ee" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
-      </mesh>
-      <mesh position={[0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
-        <torusGeometry args={[0.2, 0.016, 16, 64]} />
-        <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={3} />
-      </mesh>
-      <mesh position={[0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
-        <circleGeometry args={[0.184, 64]} />
-        <meshStandardMaterial color="#7c3aed" emissive="#a855f7" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
-      </mesh>
-      <mesh>
-        <boxGeometry args={[0.2, 0.018, 0.018]} />
-        <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
-      </mesh>
-      {[[-0.56,0,-0.1,0.28],[0.56,0,-0.1,-0.28]].map(([x,y,z,ry],i) => (
-        <mesh key={i} position={[x,y,z]} rotation={[0,ry,0]}>
-          <boxGeometry args={[0.3, 0.014, 0.014]} />
-          <meshStandardMaterial color={i===0?"#22d3ee":"#a855f7"} emissive={i===0?"#22d3ee":"#a855f7"} emissiveIntensity={2} />
+  function ARGlasses({ position }) {
+    const ref = useRef();
+    useFrame(({ clock }) => {
+      const v = 2.5 + Math.sin(clock.getElapsedTime() * 2.8) * 1.2;
+      ref.current.children.forEach(c => { if (c.material) c.material.emissiveIntensity = v; });
+    });
+    return (
+      <group ref={ref} position={position}>
+        <mesh position={[-0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
+          <torusGeometry args={[0.2, 0.016, 16, 64]} />
+          <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
         </mesh>
-      ))}
-    </group>
-  );
-}
+        <mesh position={[-0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
+          <circleGeometry args={[0.184, 64]} />
+          <meshStandardMaterial color="#0ea5e9" emissive="#22d3ee" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
+        </mesh>
+        <mesh position={[0.3, 0, 0]} rotation={[Math.PI/2,0,0]}>
+          <torusGeometry args={[0.2, 0.016, 16, 64]} />
+          <meshStandardMaterial color="#a855f7" emissive="#a855f7" emissiveIntensity={3} />
+        </mesh>
+        <mesh position={[0.3, 0, 0.01]} rotation={[Math.PI/2,0,0]}>
+          <circleGeometry args={[0.184, 64]} />
+          <meshStandardMaterial color="#7c3aed" emissive="#a855f7" emissiveIntensity={2} transparent opacity={0.2} metalness={0.5} roughness={0} />
+        </mesh>
+        <mesh>
+          <boxGeometry args={[0.2, 0.018, 0.018]} />
+          <meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={3} />
+        </mesh>
+        {[[-0.56,0,-0.1,0.28],[0.56,0,-0.1,-0.28]].map(([x,y,z,ry],i) => (
+          <mesh key={i} position={[x,y,z]} rotation={[0,ry,0]}>
+            <boxGeometry args={[0.3, 0.014, 0.014]} />
+            <meshStandardMaterial color={i===0?"#22d3ee":"#a855f7"} emissive={i===0?"#22d3ee":"#a855f7"} emissiveIntensity={2} />
+          </mesh>
+        ))}
+      </group>
+    );
+  }
 
 /* ─── Face outline dots ─── */
 function FaceOutlineDots({ points, color }) {

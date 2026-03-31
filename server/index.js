@@ -6,10 +6,11 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://arvrhackthon.netlify.app', 'http://localhost:5173'],
-  methods: ['GET', 'POST'],
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.options('*', cors());
 app.use(express.json());
 
 /* ── MongoDB connection ── */
@@ -43,7 +44,7 @@ app.post('/api/register', async (req, res) => {
     // Check duplicate email
     const existing = await Registration.findOne({ email });
     if (existing) {
-      return res.status(409).json({ success: false, message: 'This email is already registered.' });
+      return res.status(409).json({ success: false, message: '⚠️ This email is already registered! Each participant can only register once.' });
     }
 
     const registration = new Registration({ name, email, phone, branch, collegeName, teamName, teamMembers });
@@ -68,6 +69,11 @@ app.get('/api/registrations', async (req, res) => {
 
 /* ── Health check ── */
 app.get('/', (req, res) => res.json({ status: 'AR/VR Hackathon API running 🚀' }));
+
+/* ── Keep alive ping ── */
+setInterval(() => {
+  console.log('🟢 Server alive -', new Date().toLocaleTimeString());
+}, 25 * 60 * 1000); // ping every 25 min
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -366,8 +366,8 @@ export default function RegisterModal({ onClose }) {
       } else {
         setStatus({ ok: false, msg: data.message });
       }
-    } catch {
-      setStatus({ ok: false, msg: 'Network error. Please try again.' });
+    } catch (err) {
+      setStatus({ ok: false, msg: 'Server is waking up... Please wait 30 seconds and try again ⏳' });
     } finally {
       setLoading(false);
     }

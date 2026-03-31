@@ -11,9 +11,17 @@ import Timeline from './components/Timeline';
 import Prizes from './components/Prizes';
 import Rules from './components/Rules';
 import Footer from './components/Footer';
+import RegisterModal from './components/RegisterModal';
+import AdminPage from './components/AdminPage';
+
+const isAdmin = window.location.pathname === '/admin';
 
 export default function App() {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded]       = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  /* ── Admin route ── */
+  if (isAdmin) return <AdminPage />;
 
   return (
     <>
@@ -22,21 +30,15 @@ export default function App() {
 
       <AnimatePresence>
         {loaded && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
             <ParticlesBackground />
-
-            {/* Radial gradient overlay */}
             <div className="fixed inset-0 z-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,92,246,0.15) 0%, transparent 60%)' }} />
 
-            <Navbar />
+            <Navbar onRegister={() => setShowModal(true)} />
 
             <main className="relative z-10">
-              <Hero />
+              <Hero onRegister={() => setShowModal(true)} />
               <About />
               <Tracks />
               <Timeline />
@@ -45,6 +47,10 @@ export default function App() {
             </main>
 
             <Footer />
+
+            <AnimatePresence>
+              {showModal && <RegisterModal onClose={() => setShowModal(false)} />}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

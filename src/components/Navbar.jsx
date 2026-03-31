@@ -121,7 +121,7 @@ function NavLink({ link, index, active }) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ onRegister }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -196,6 +196,7 @@ export default function Navbar() {
               style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)' }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
+              onClick={onRegister}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.1 }}

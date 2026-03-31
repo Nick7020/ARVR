@@ -11,7 +11,7 @@ const FloatingCube = ({ style, delay = 0 }) => (
   />
 );
 
-export default function Hero() {
+export default function Hero({ onRegister }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '35%']);
@@ -247,6 +247,7 @@ export default function Hero() {
                 style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={onRegister}
               >
                 {/* Shimmer */}
                 <motion.span

@@ -354,23 +354,39 @@ export default function RegisterModal({ onClose }) {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
-    try {
-      const res  = await fetch(`${API}/api/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setLaunched(true);
-      } else {
-        setStatus({ ok: false, msg: data.message });
+
+    // retry logic — 3 attempts
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+      try {
+        attempts++;
+        const res = await fetch(`${API}/api/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setLaunched(true);
+          setLoading(false);
+          return;
+        } else {
+          setStatus({ ok: false, msg: data.message });
+          setLoading(false);
+          return;
+        }
+      } catch (err) {
+        if (attempts < maxAttempts) {
+          setStatus({ ok: false, msg: `Connecting to server... attempt ${attempts}/${maxAttempts} ⏳` });
+          await new Promise(r => setTimeout(r, 3000)); // wait 3 sec before retry
+        } else {
+          setStatus({ ok: false, msg: '❌ Server unreachable. Please try again in a minute.' });
+        }
       }
-    } catch (err) {
-      setStatus({ ok: false, msg: 'Server is waking up... Please wait 30 seconds and try again ⏳' });
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const filled   = Object.values(form).filter(v => v.trim()).length;

@@ -5,7 +5,11 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors({ origin: '*' }));
+app.use(cors({
+  origin: ['https://arvrhackthon.netlify.app', 'http://localhost:5173'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 /* ── MongoDB connection ── */

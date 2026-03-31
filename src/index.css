@@ -10,6 +10,10 @@
     overflow-x: hidden;
     cursor: none;
   }
+  /* Show default cursor on mobile/touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    body { cursor: auto; }
+  }
 }
 
 @layer utilities {

@@ -3,7 +3,11 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 const DOTS = 10;
 
+const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
 export default function CursorGlow() {
+  // Don't render on mobile/touch devices
+  if (isTouchDevice) return null;
   const [pos, setPos] = useState(() =>
     Array.from({ length: DOTS }, () => ({ x: -300, y: -300 }))
   );

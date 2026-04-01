@@ -13,7 +13,7 @@ const rules = [
 
 export default function Rules() {
   return (
-    <section id="rules" className="relative py-32 px-4">
+    <section id="rules" className="relative py-16 sm:py-24 md:py-32 px-4">
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), transparent)' }} />
 
       <div className="max-w-6xl mx-auto">
@@ -31,11 +31,11 @@ export default function Rules() {
           <p className="text-gray-400 mt-4 max-w-xl mx-auto">Follow these guidelines to ensure a fair and exciting competition for everyone.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {rules.map((rule, i) => (
             <motion.div
               key={rule.title}
-              className="glass rounded-2xl p-6 group cursor-pointer relative overflow-hidden"
+              className="glass rounded-2xl p-4 sm:p-6 group cursor-pointer relative overflow-hidden"
               style={{ border: `1px solid ${rule.color}20` }}
               initial={{ opacity: 0, y: 40, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}

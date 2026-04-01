@@ -143,7 +143,7 @@ export default function Navbar({ onRegister }) {
       />
 
       <div
-        className="mx-4 mt-3 rounded-2xl px-6 py-3 transition-all duration-500"
+        className="mx-2 sm:mx-4 mt-3 rounded-2xl px-4 sm:px-6 py-3 transition-all duration-500"
         style={{
           background: scrolled
             ? 'rgba(2,0,16,0.88)'

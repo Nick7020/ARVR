@@ -11,7 +11,7 @@ const tracks = [
 
 export default function Tracks() {
   return (
-    <section id="tracks" className="relative py-32 px-4">
+    <section id="tracks" className="relative py-16 sm:py-24 md:py-32 px-4">
       {/* Section divider */}
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), transparent)' }} />
 

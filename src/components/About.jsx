@@ -76,7 +76,7 @@ export default function About() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="about" ref={ref} className="relative py-32 px-4">
+    <section id="about" ref={ref} className="relative py-16 sm:py-24 md:py-32 px-4">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-16"
@@ -86,7 +86,7 @@ export default function About() {
           transition={{ duration: 0.8 }}
         >
           <span className="text-purple-400 text-sm tracking-[0.3em] uppercase font-medium">Who We Are</span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mt-3 mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mt-3 mb-6">
             About the <span className="gradient-text">Hackathon</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">

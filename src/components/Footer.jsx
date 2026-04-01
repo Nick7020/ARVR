@@ -39,7 +39,7 @@ const navLinks = ['About', 'Tracks', 'Timeline', 'Prizes', 'Rules'];
 
 export default function Footer() {
   return (
-    <footer className="relative pt-20 pb-10 px-4">
+    <footer className="relative pt-12 sm:pt-20 pb-10 px-4">
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.8), rgba(34,211,238,0.5), transparent)' }} />
 
       {/* Glow orb */}

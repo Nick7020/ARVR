@@ -23,7 +23,7 @@ const prizes = [
 
 export default function Prizes() {
   return (
-    <section id="prizes" className="relative py-32 px-4">
+    <section id="prizes" className="relative py-16 sm:py-24 md:py-32 px-4">
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(234,179,8,0.5), transparent)' }} />
 
       <div className="max-w-6xl mx-auto">
@@ -41,17 +41,17 @@ export default function Prizes() {
           <p className="text-gray-400 mt-4 text-lg">Over ₹1,00,000 in prizes and opportunities</p>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row items-end justify-center gap-6">
+        <div className="flex flex-col md:flex-row items-stretch justify-center gap-6">
           {[prizes[1], prizes[0], prizes[2]].map((prize, i) => (
             <motion.div
               key={prize.rank}
-              className={`relative rounded-2xl p-8 w-full md:w-80 bg-gradient-to-b ${prize.gradient} group cursor-pointer`}
-              style={{ border: `1px solid ${prize.border}`, transform: `scale(${prize.scale})` }}
+              className={`relative rounded-2xl p-6 w-full md:w-72 bg-gradient-to-b ${prize.gradient} group cursor-pointer`}
+              style={{ border: `1px solid ${prize.border}` }}
               initial={{ opacity: 0, y: 80 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.15 }}
-              whileHover={{ y: -10, boxShadow: `0 20px 60px ${prize.glow}` }}
+              whileHover={{ y: -8, boxShadow: `0 20px 60px ${prize.glow}` }}
             >
               {prize.rank === '1st' && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-black"

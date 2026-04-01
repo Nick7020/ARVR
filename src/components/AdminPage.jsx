@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import * as XLSX from 'xlsx';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL || '';
 const ADMIN_PASSWORD = 'zibacar2026'; // simple frontend guard
 
 export default function AdminPage() {

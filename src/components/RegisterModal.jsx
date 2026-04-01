@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HackathonTicket from './HackathonTicket';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API = import.meta.env.VITE_API_URL || '';
 
 const fields = [
   { name: 'name',        label: 'Your Name',                      type: 'text',     placeholder: 'John Doe',            icon: '👤' },

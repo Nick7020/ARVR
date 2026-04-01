@@ -20,7 +20,6 @@ export default function App() {
   const [loaded, setLoaded]       = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  /* ── Admin route ── */
   if (isAdmin) return <AdminPage />;
 
   return (

@@ -262,14 +262,20 @@ export default function Navbar({ onRegister }) {
                 <motion.a
                   key={link.label}
                   href={link.href}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-purple-500/10 transition-all duration-200"
-                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-4 py-4 rounded-xl text-gray-300 active:text-white active:bg-purple-500/10 transition-all duration-200"
+                  onClick={() => {
+                    setOpen(false);
+                    setTimeout(() => {
+                      const el = document.querySelector(link.href);
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.06 }}
                 >
-                  <span className="text-purple-400 text-xs">{link.icon}</span>
-                  <span className="text-sm font-medium">{link.label}</span>
+                  <span className="text-purple-400 text-sm">{link.icon}</span>
+                  <span className="text-base font-semibold">{link.label}</span>
                 </motion.a>
               ))}
               <div className="mt-2 pt-3" style={{ borderTop: '1px solid rgba(139,92,246,0.15)' }}>

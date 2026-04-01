@@ -1,7 +1,7 @@
-const connectDB    = require('./_db');
-const Registration = require('./_model');
+import connectDB from './_db.js';
+import Registration from './_model.js';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
@@ -31,4 +31,4 @@ module.exports = async (req, res) => {
     console.error('Register error:', err);
     res.status(500).json({ success: false, message: '❌ Server error: ' + err.message });
   }
-};
+}

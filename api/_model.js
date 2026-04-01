@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const schema = new mongoose.Schema({
   name:        { type: String, required: true, trim: true },
@@ -11,4 +11,4 @@ const schema = new mongoose.Schema({
   createdAt:   { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.models.Registration || mongoose.model('Registration', schema);
+export default mongoose.models.Registration || mongoose.model('Registration', schema);

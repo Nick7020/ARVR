@@ -273,9 +273,12 @@ export default function Navbar({ onRegister }) {
                 </motion.a>
               ))}
               <div className="mt-2 pt-3" style={{ borderTop: '1px solid rgba(139,92,246,0.15)' }}>
-                <button className="w-full py-3 rounded-xl text-sm font-bold text-white"
-                  style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}>
-                  Register Now
+                <button
+                  className="w-full py-3 rounded-xl text-sm font-bold text-white"
+                  style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
+                  onClick={() => { setOpen(false); onRegister(); }}
+                >
+                  🚀 Register Now
                 </button>
               </div>
             </div>

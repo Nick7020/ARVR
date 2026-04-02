@@ -9,7 +9,7 @@ import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
 import Chatbot from './components/Chatbot';
 
-// Lazy load heavy sections
+// Lazy load heavy sections — NOT Hero (must render first)
 const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
 const About    = lazy(() => import('./components/About'));
 const Tracks   = lazy(() => import('./components/Tracks'));
@@ -40,8 +40,8 @@ export default function App() {
             <Navbar onRegister={() => setShowModal(true)} />
 
             <main className="relative z-10">
+              <Hero onRegister={() => setShowModal(true)} />
               <Suspense fallback={null}>
-                <Hero onRegister={() => setShowModal(true)} />
                 <About />
                 <Tracks />
                 <Timeline />

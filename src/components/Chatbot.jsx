@@ -122,9 +122,9 @@ export default function Chatbot() {
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3" style={{ borderBottom: '1px solid rgba(139,92,246,0.15)' }}>
               <div className="relative">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl"
-                  style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.3), rgba(34,211,238,0.2))', border: '1.5px solid rgba(139,92,246,0.6)' }}>
-                  🤖
+                <div className="w-10 h-10 rounded-full overflow-hidden"
+                  style={{ border: '1.5px solid rgba(139,92,246,0.6)' }}>
+                  <img src="/logo.webp" alt="ARIA" className="w-full h-full object-cover" />
                 </div>
                 <motion.div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400"
                   style={{ border: '2px solid rgba(10,0,30,1)' }}
@@ -149,8 +149,10 @@ export default function Chatbot() {
                   transition={{ duration: 0.3 }}
                 >
                   {msg.from === 'bot' && (
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 flex-shrink-0 mt-1"
-                      style={{ background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.4)' }}>🤖</div>
+                    <div className="w-6 h-6 rounded-full overflow-hidden mr-2 flex-shrink-0 mt-1"
+                      style={{ border: '1px solid rgba(139,92,246,0.4)' }}>
+                      <img src="/logo.webp" alt="bot" className="w-full h-full object-cover" />
+                    </div>
                   )}
                   <div className="max-w-[80%]">
                     <div className="px-3 py-2.5 rounded-2xl text-xs leading-relaxed"
@@ -176,8 +178,10 @@ export default function Chatbot() {
                 {typing && (
                   <motion.div className="flex items-center gap-2"
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs"
-                      style={{ background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.4)' }}>🤖</div>
+                    <div className="w-6 h-6 rounded-full overflow-hidden"
+                      style={{ border: '1px solid rgba(139,92,246,0.4)' }}>
+                      <img src="/logo.webp" alt="bot" className="w-full h-full object-cover" />
+                    </div>
                     <div className="px-4 py-3 rounded-2xl rounded-bl-sm flex gap-1"
                       style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
                       {[0,1,2].map(i => (
@@ -235,37 +239,100 @@ export default function Chatbot() {
         )}
       </AnimatePresence>
 
-      {/* ── FAB BUTTON ── */}
+      {/* ── FAB BUTTON — Robot Face ── */}
       <motion.button
-        className="fixed bottom-6 right-4 sm:right-6 z-[9980] w-14 h-14 rounded-full flex items-center justify-center"
+        className="fixed bottom-6 right-4 sm:right-6 z-[9980] flex items-center justify-center"
         style={{
-          background: 'linear-gradient(135deg, #7c3aed, #2563eb)',
-          boxShadow: open ? '0 0 30px rgba(139,92,246,0.6)' : '0 0 20px rgba(139,92,246,0.4)',
+          width: 58, height: 62,
+          background: 'linear-gradient(145deg, #4c1d95, #1e3a8a)',
+          borderRadius: '35% 35% 40% 40%',
+          border: '2px solid rgba(139,92,246,0.8)',
+          boxShadow: open
+            ? '0 0 30px rgba(139,92,246,0.8), 0 0 60px rgba(139,92,246,0.3)'
+            : '0 0 20px rgba(139,92,246,0.5)',
+          position: 'fixed',
         }}
         onClick={() => setOpen(o => !o)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        animate={{ boxShadow: ['0 0 15px rgba(139,92,246,0.4)', '0 0 30px rgba(139,92,246,0.7)', '0 0 15px rgba(139,92,246,0.4)'] }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
+        animate={{ boxShadow: [
+          '0 0 15px rgba(139,92,246,0.4)',
+          '0 0 35px rgba(139,92,246,0.8)',
+          '0 0 15px rgba(139,92,246,0.4)'
+        ]}}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <AnimatePresence mode="wait">
           {open ? (
-            <motion.span key="close" className="text-white text-lg font-bold"
-              initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}>✕</motion.span>
+            <motion.span key="close"
+              className="text-white font-black text-xl"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >✕</motion.span>
           ) : (
-            <motion.span key="open" className="text-2xl"
-              initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.2 }}>🤖</motion.span>
+            <motion.div key="robot"
+              className="flex flex-col items-center justify-center gap-1 w-full px-2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Antenna */}
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                <motion.div
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: '#22d3ee', boxShadow: '0 0 8px #22d3ee, 0 0 16px #22d3ee' }}
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                />
+                <div className="w-0.5 h-2.5" style={{ background: 'rgba(139,92,246,0.8)' }} />
+              </div>
+
+              {/* Eyes */}
+              <div className="flex gap-2">
+                {[0, 1].map(i => (
+                  <motion.div
+                    key={i}
+                    style={{
+                      width: 10, height: 8,
+                      borderRadius: 3,
+                      background: '#22d3ee',
+                      boxShadow: '0 0 8px #22d3ee, 0 0 16px #22d3ee',
+                    }}
+                    animate={{ opacity: [1, 1, 0.1, 1, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: i * 0.15, times: [0, 0.45, 0.5, 0.55, 1] }}
+                  />
+                ))}
+              </div>
+
+              {/* Nose dot */}
+              <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(139,92,246,0.8)' }} />
+
+              {/* Mouth */}
+              <div className="flex gap-0.5 items-end">
+                {[2, 4, 5, 4, 2].map((h, i) => (
+                  <motion.div
+                    key={i}
+                    style={{ width: 4, height: h, borderRadius: 2, background: i === 2 ? '#22d3ee' : 'rgba(34,211,238,0.5)' }}
+                    animate={{ height: [h, h + 2, h] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
+                  />
+                ))}
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
 
         {/* Unread badge */}
         <AnimatePresence>
           {!open && unread > 0 && (
-            <motion.div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-              style={{ background: '#ec4899' }}
-              initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
+            <motion.div
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+              style={{ background: '#ec4899', boxShadow: '0 0 8px #ec4899' }}
+              initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+            >
               {unread}
             </motion.div>
           )}

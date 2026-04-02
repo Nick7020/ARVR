@@ -92,6 +92,8 @@ export default function HackathonTicket({ form, onClose }) {
             <div className="flex-1 min-w-0">
               <p style={{ color:'rgba(139,92,246,0.7)', fontSize:7, letterSpacing:'0.2em', textTransform:'uppercase', margin:0 }}>Zeal Education Society's</p>
               <p style={{ color:'#fff', fontSize:9, fontWeight:800, margin:0 }}>ZIBACAR · AR/VR Hackathon 2026</p>
+              <p style={{ color:'rgba(255,255,255,0.7)', fontSize:8, fontWeight:700, margin:0 }}>Zeal Institute of Business Administration,</p>
+              <p style={{ color:'rgba(255,255,255,0.7)', fontSize:8, fontWeight:700, margin:0 }}>Computer Application and Research</p>
             </div>
             <div className="text-right flex-shrink-0">
               <p style={{ color:'rgba(34,211,238,0.5)', fontSize:6, letterSpacing:'0.15em', margin:0 }}>TICKET ID</p>

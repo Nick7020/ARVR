@@ -16,36 +16,37 @@ export default function HackathonTicket({ form, onClose }) {
     setDownloading(true);
     try {
       const el     = ticketRef.current;
-      const canvas = await html2canvas(el, { scale: 3, useCORS: true, backgroundColor: '#0a0020' });
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#0a0020' });
       const img    = canvas.toDataURL('image/png');
       const w = canvas.width, h = canvas.height;
-      const isLandscape = w > h;
-      const pdf = new jsPDF({
-        orientation: isLandscape ? 'landscape' : 'portrait',
-        unit: 'px',
-        format: [w / 3, h / 3],
-      });
-      pdf.addImage(img, 'PNG', 0, 0, w / 3, h / 3);
+      const pdf = new jsPDF({ orientation: h > w ? 'portrait' : 'landscape', unit: 'px', format: [w/2, h/2] });
+      pdf.addImage(img, 'PNG', 0, 0, w/2, h/2);
       pdf.save(`ARVR_Hackathon_${form.teamName.replace(/\s+/g,'_')}_Ticket.pdf`);
       setDownloaded(true);
-    } catch (e) { console.error(e); }
+    } catch(e) { console.error(e); }
     finally { setDownloading(false); }
+  };
+
+  const S = {
+    label: { color:'rgba(139,92,246,0.6)', fontSize:8, letterSpacing:'0.2em', textTransform:'uppercase', margin:'0 0 2px', display:'block' },
+    value: { color:'#e2e8f0', fontSize:11, fontWeight:600, margin:0, wordBreak:'break-word' },
+    divider: { height:1, background:'linear-gradient(90deg,transparent,rgba(139,92,246,0.35),transparent)', margin:'10px 0' },
   };
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-start pt-6 pb-10 px-3 overflow-y-auto"
-      style={{ background: 'rgba(2,0,16,0.97)', backdropFilter: 'blur(20px)' }}
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-start overflow-y-auto py-6 px-3"
+      style={{ background:'rgba(2,0,16,0.97)', backdropFilter:'blur(20px)' }}
+      initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
     >
       {/* Stars */}
-      {Array.from({ length: 30 }).map((_, i) => (
+      {Array.from({ length: 20 }).map((_, i) => (
         <motion.div key={i} className="absolute rounded-full bg-white pointer-events-none"
-          style={{ width: Math.random()*1.5+0.5, height: Math.random()*1.5+0.5, left:`${Math.random()*100}%`, top:`${Math.random()*100}%` }}
-          animate={{ opacity:[0.1,0.7,0.1] }} transition={{ duration:2+Math.random()*2, repeat:Infinity, delay:Math.random()*2 }} />
+          style={{ width:Math.random()*1.5+0.5, height:Math.random()*1.5+0.5, left:`${Math.random()*100}%`, top:`${Math.random()*100}%` }}
+          animate={{ opacity:[0.1,0.6,0.1] }} transition={{ duration:2+Math.random()*2, repeat:Infinity, delay:Math.random()*2 }} />
       ))}
 
-      <motion.p className="text-purple-400/60 text-xs tracking-[0.35em] uppercase mb-4 z-10 text-center"
+      <motion.p className="text-purple-400/60 text-xs tracking-[0.3em] uppercase mb-4 z-10 text-center"
         initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }}>
         🎟 Your Hackathon Pass is Ready!
       </motion.p>
@@ -55,14 +56,14 @@ export default function HackathonTicket({ form, onClose }) {
         ref={ticketRef}
         className="relative w-full z-10 overflow-hidden"
         style={{
-          maxWidth: 640,
-          background: 'linear-gradient(135deg, #0a0020 0%, #0d0030 60%, #080018 100%)',
-          border: '1px solid rgba(139,92,246,0.5)',
-          borderRadius: 18,
-          boxShadow: '0 0 50px rgba(139,92,246,0.3)',
-          fontFamily: 'Inter, system-ui, sans-serif',
+          maxWidth: 480,
+          background:'linear-gradient(135deg, #0a0020 0%, #0d0030 60%, #080018 100%)',
+          border:'1px solid rgba(139,92,246,0.5)',
+          borderRadius:16,
+          boxShadow:'0 0 40px rgba(139,92,246,0.3)',
+          fontFamily:'Inter, system-ui, sans-serif',
         }}
-        initial={{ opacity:0, scale:0.88, y:30 }}
+        initial={{ opacity:0, scale:0.9, y:30 }}
         animate={{ opacity:1, scale:1, y:0 }}
         transition={{ type:'spring', stiffness:200, damping:20 }}
       >
@@ -72,116 +73,102 @@ export default function HackathonTicket({ form, onClose }) {
         {/* Grid bg */}
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
           backgroundImage:'linear-gradient(rgba(139,92,246,0.3) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.3) 1px,transparent 1px)',
-          backgroundSize:'28px 28px',
+          backgroundSize:'24px 24px',
         }} />
 
-        {/* Glow orbs */}
-        <div className="absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none"
-          style={{ background:'radial-gradient(circle,rgba(139,92,246,0.2) 0%,transparent 70%)', filter:'blur(18px)' }} />
-        <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full pointer-events-none"
-          style={{ background:'radial-gradient(circle,rgba(34,211,238,0.15) 0%,transparent 70%)', filter:'blur(14px)' }} />
+        {/* Glow */}
+        <div className="absolute top-0 right-0 w-32 h-32 rounded-full pointer-events-none"
+          style={{ background:'radial-gradient(circle,rgba(139,92,246,0.2) 0%,transparent 70%)', filter:'blur(16px)' }} />
 
-        <div className="relative p-5">
+        <div className="relative p-4">
 
-          {/* ── HEADER ROW ── */}
-          <div className="flex items-center gap-3 mb-4">
+          {/* HEADER */}
+          <div className="flex items-center gap-3 mb-3">
             <img src="/logo.webp" alt="logo" style={{
-              width:40, height:40, borderRadius:'50%', flexShrink:0,
+              width:36, height:36, borderRadius:'50%', flexShrink:0,
               border:'2px solid rgba(139,92,246,0.7)',
-              boxShadow:'0 0 12px rgba(139,92,246,0.5)',
+              boxShadow:'0 0 10px rgba(139,92,246,0.5)',
             }} />
-            <div>
-              <p style={{ color:'rgba(139,92,246,0.7)', fontSize:8, letterSpacing:'0.2em', textTransform:'uppercase', margin:0 }}>
-                Zeal Education Society's
-              </p>
-              <p style={{ color:'#fff', fontSize:10, fontWeight:800, margin:0 }}>
-                ZIBACAR · AR/VR Hackathon 2026
-              </p>
+            <div className="flex-1 min-w-0">
+              <p style={{ color:'rgba(139,92,246,0.7)', fontSize:7, letterSpacing:'0.2em', textTransform:'uppercase', margin:0 }}>Zeal Education Society's</p>
+              <p style={{ color:'#fff', fontSize:9, fontWeight:800, margin:0 }}>ZIBACAR · AR/VR Hackathon 2026</p>
             </div>
-            {/* Ticket ID top right */}
-            <div className="ml-auto text-right flex-shrink-0">
-              <p style={{ color:'rgba(34,211,238,0.5)', fontSize:7, letterSpacing:'0.15em', margin:0 }}>TICKET ID</p>
-              <p style={{ color:'#22d3ee', fontSize:10, fontWeight:900, margin:0 }}>{ticketId}</p>
+            <div className="text-right flex-shrink-0">
+              <p style={{ color:'rgba(34,211,238,0.5)', fontSize:6, letterSpacing:'0.15em', margin:0 }}>TICKET ID</p>
+              <p style={{ color:'#22d3ee', fontSize:9, fontWeight:900, margin:0 }}>{ticketId}</p>
             </div>
           </div>
 
-          {/* ── EVENT TITLE ── */}
-          <div className="mb-4 pb-4" style={{ borderBottom:'1px solid rgba(139,92,246,0.2)' }}>
-            <h1 style={{ fontSize:24, fontWeight:900, margin:0, lineHeight:1, color:'#ffffff',
-              textShadow:'0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(139,92,246,0.3)' }}>
+          {/* EVENT TITLE */}
+          <div className="mb-3 pb-3" style={{ borderBottom:'1px solid rgba(139,92,246,0.2)' }}>
+            <h1 style={{ fontSize:22, fontWeight:900, margin:0, lineHeight:1, color:'#ffffff', textShadow:'0 0 20px rgba(255,255,255,0.4)' }}>
               AR/VR HACKATHON
             </h1>
-            <p style={{ color:'#22d3ee', fontSize:10, margin:'4px 0 0', letterSpacing:'0.25em', textTransform:'uppercase' }}>
+            <p style={{ color:'#22d3ee', fontSize:9, margin:'3px 0 0', letterSpacing:'0.2em', textTransform:'uppercase' }}>
               Innovation Meets Immersion
             </p>
           </div>
 
-          {/* ── MAIN CONTENT: 2 cols on desktop, 1 col on mobile ── */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* PARTICIPANT NAME */}
+          <div className="mb-3">
+            <span style={S.label}>Participant</span>
+            <p style={{ color:'#ffffff', fontSize:18, fontWeight:900, margin:0, textShadow:'0 0 12px rgba(255,255,255,0.3)' }}>
+              {form.name}
+            </p>
+          </div>
 
-            {/* LEFT */}
-            <div className="flex-1 flex flex-col gap-3">
-              {/* Participant name BIG */}
-              <div>
-                <p style={{ color:'rgba(139,92,246,0.6)', fontSize:7, letterSpacing:'0.25em', textTransform:'uppercase', margin:'0 0 2px' }}>PARTICIPANT</p>
-                <p style={{ color:'#ffffff', fontSize:20, fontWeight:900, margin:0,
-                  textShadow:'0 0 15px rgba(255,255,255,0.3)' }}>{form.name}</p>
-              </div>
+          <div style={S.divider} />
 
-              {/* Info grid */}
-              <div className="grid grid-cols-1 gap-2">
-                {[
-                  { label:'EMAIL',   value: form.email },
-                  { label:'BRANCH',  value: form.branch },
-                  { label:'COLLEGE', value: form.collegeName },
-                ].map(({ label, value }) => (
-                  <div key={label} className="flex items-start gap-2">
-                    <span style={{ color:'rgba(139,92,246,0.55)', fontSize:7, letterSpacing:'0.2em', minWidth:52, paddingTop:2 }}>{label}</span>
-                    <span style={{ color:'#e2e8f0', fontSize:11, fontWeight:600, wordBreak:'break-all' }}>{value}</span>
-                  </div>
-                ))}
+          {/* INFO GRID — 2 cols */}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-3">
+            {[
+              { label:'Email',   value: form.email },
+              { label:'Phone',   value: form.phone },
+              { label:'Branch',  value: form.branch },
+              { label:'College', value: form.collegeName },
+            ].map(({ label, value }) => (
+              <div key={label}>
+                <span style={S.label}>{label}</span>
+                <p style={S.value}>{value}</p>
               </div>
+            ))}
+          </div>
 
-              {/* Date row */}
-              <div className="flex gap-4 flex-wrap mt-1">
-                {[['📅','DATE','Apr 20–21, 2026'],['📍','VENUE','ZIBACAR'],['⏱','DURATION','48 Hours']].map(([icon,label,val])=>(
-                  <div key={label}>
-                    <p style={{ color:'rgba(139,92,246,0.55)', fontSize:7, letterSpacing:'0.15em', margin:0 }}>{icon} {label}</p>
-                    <p style={{ color:'#e2e8f0', fontSize:9, fontWeight:700, margin:0 }}>{val}</p>
-                  </div>
-                ))}
-              </div>
+          <div style={S.divider} />
+
+          {/* TEAM */}
+          <div className="mb-3">
+            <div className="flex items-center justify-between mb-2">
+              <span style={S.label}>Team Name</span>
+              <p style={{ color:'#a855f7', fontSize:13, fontWeight:900, margin:0 }}>{form.teamName}</p>
             </div>
 
-            {/* DIVIDER — horizontal on mobile, vertical on desktop */}
-            <div className="sm:hidden h-px w-full" style={{ background:'linear-gradient(90deg,transparent,rgba(139,92,246,0.4),transparent)' }} />
-            <div className="hidden sm:block w-px self-stretch" style={{ background:'linear-gradient(180deg,transparent,rgba(139,92,246,0.4),rgba(34,211,238,0.3),transparent)' }} />
-
-            {/* RIGHT */}
-            <div className="sm:w-40 flex flex-col gap-3">
-              {/* Team */}
-              <div style={{ padding:'8px 12px', borderRadius:10, background:'rgba(139,92,246,0.1)', border:'1px solid rgba(139,92,246,0.3)', textAlign:'center' }}>
-                <p style={{ color:'rgba(139,92,246,0.6)', fontSize:7, letterSpacing:'0.2em', margin:'0 0 2px' }}>TEAM</p>
-                <p style={{ color:'#a855f7', fontSize:14, fontWeight:900, margin:0 }}>{form.teamName}</p>
-              </div>
-
-              {/* Members */}
-              <div>
-                <p style={{ color:'rgba(34,211,238,0.6)', fontSize:7, letterSpacing:'0.2em', margin:'0 0 6px', textAlign:'center' }}>TEAM MEMBERS</p>
-                {members.map((m, i) => (
-                  <div key={i} className="flex items-center gap-2 mb-1.5">
-                    <span style={{ width:15, height:15, borderRadius:'50%', background:'rgba(139,92,246,0.2)', border:'1px solid rgba(139,92,246,0.4)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:7, color:'#a855f7', flexShrink:0 }}>{i+1}</span>
-                    <span style={{ color:'#e2e8f0', fontSize:10, fontWeight:600 }}>{m}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* IIT Mandi */}
-              <p style={{ color:'rgba(139,92,246,0.4)', fontSize:7, letterSpacing:'0.12em', textAlign:'center', marginTop:'auto' }}>
-                In Collaboration with IIT Mandi
-              </p>
+            <span style={S.label}>Team Members</span>
+            <div className="grid grid-cols-2 gap-1 mt-1">
+              {members.map((m, i) => (
+                <div key={i} className="flex items-center gap-1.5">
+                  <span style={{ width:14, height:14, borderRadius:'50%', background:'rgba(139,92,246,0.2)', border:'1px solid rgba(139,92,246,0.4)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:7, color:'#a855f7', flexShrink:0 }}>{i+1}</span>
+                  <span style={{ color:'#e2e8f0', fontSize:10, fontWeight:600 }}>{m}</span>
+                </div>
+              ))}
             </div>
           </div>
+
+          <div style={S.divider} />
+
+          {/* DATE ROW */}
+          <div className="flex gap-3 flex-wrap">
+            {[['📅','Date','Apr 20–21, 2026'],['📍','Venue','ZIBACAR, Pune'],['⏱','Duration','48 Hours']].map(([icon,label,val]) => (
+              <div key={label}>
+                <p style={{ color:'rgba(139,92,246,0.55)', fontSize:7, letterSpacing:'0.15em', margin:0 }}>{icon} {label}</p>
+                <p style={{ color:'#e2e8f0', fontSize:9, fontWeight:700, margin:0 }}>{val}</p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ color:'rgba(139,92,246,0.35)', fontSize:7, letterSpacing:'0.12em', textAlign:'center', marginTop:10 }}>
+            In Collaboration with IIT Mandi
+          </p>
         </div>
 
         {/* Bottom bar */}
@@ -189,7 +176,7 @@ export default function HackathonTicket({ form, onClose }) {
       </motion.div>
 
       {/* Buttons */}
-      <motion.div className="flex flex-col sm:flex-row gap-3 mt-5 w-full z-10" style={{ maxWidth:640 }}
+      <motion.div className="flex flex-col sm:flex-row gap-3 mt-5 w-full z-10" style={{ maxWidth:480 }}
         initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.4 }}>
         <motion.button
           onClick={downloadPDF} disabled={downloading}
@@ -202,7 +189,6 @@ export default function HackathonTicket({ form, onClose }) {
               animate={{ rotate:360 }} transition={{ duration:0.7, repeat:Infinity, ease:'linear' }} />Generating...</>
           ) : downloaded ? <>✅ Downloaded!</> : <>📥 Download Ticket (PDF)</>}
         </motion.button>
-
         <motion.button onClick={onClose}
           className="flex-1 py-3.5 rounded-xl font-bold text-purple-300 text-sm"
           style={{ background:'rgba(139,92,246,0.1)', border:'1px solid rgba(139,92,246,0.3)' }}

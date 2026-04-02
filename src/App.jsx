@@ -13,6 +13,7 @@ import Rules from './components/Rules';
 import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
+import Chatbot from './components/Chatbot';
 
 const isAdmin = window.location.pathname === '/admin';
 
@@ -46,6 +47,7 @@ export default function App() {
             </main>
 
             <Footer />
+            <Chatbot />
 
             <AnimatePresence>
               {showModal && <RegisterModal onClose={() => setShowModal(false)} />}

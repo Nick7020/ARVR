@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+  import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, Suspense } from 'react';
 import VRModel from './VRModel';
 
@@ -101,18 +101,19 @@ export default function Hero({ onRegister }) {
                   style={{ background: 'linear-gradient(135deg, #a855f7, #3b82f6, #22d3ee)', WebkitBackgroundClip: 'text' }}
                 />
                 <h2
-                  className="relative font-black text-lg sm:text-2xl md:text-3xl lg:text-4xl leading-tight"
+                  className="relative font-black text-2xl sm:text-3xl md:text-4xl leading-tight"
                   style={{
                     background: 'linear-gradient(135deg, #ffffff 0%, #c084fc 40%, #22d3ee 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
+                    textShadow: 'none',
                     filter: 'drop-shadow(0 0 12px rgba(139,92,246,0.8))',
                   }}
                 >
                   Zeal Institute of Business Administration,
                 </h2>
                 <h2
-                  className="relative font-black text-lg sm:text-2xl md:text-3xl lg:text-4xl leading-tight"
+                  className="relative font-black text-2xl sm:text-3xl md:text-4xl leading-tight"
                   style={{
                     background: 'linear-gradient(135deg, #c084fc 0%, #60a5fa 50%, #22d3ee 100%)',
                     WebkitBackgroundClip: 'text',

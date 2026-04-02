@@ -274,7 +274,7 @@ export default function Chatbot() {
         )}
       </AnimatePresence>
 
-      {/* ── FAB BUTTON — Robot Face ── */}}
+      {/* ── FAB BUTTON — Robot Face ── */}
       <motion.button
         className="fixed bottom-6 right-4 sm:right-6 z-[9980] flex items-center justify-center"
         style={{

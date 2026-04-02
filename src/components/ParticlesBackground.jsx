@@ -9,7 +9,8 @@ export default function ParticlesBackground() {
     let animId;
 
     const isMobile = window.innerWidth < 768;
-    const COUNT    = isMobile ? 40 : 100; // fewer on mobile
+    const COUNT    = isMobile ? 30 : 90;
+    const CONNECT  = !isMobile;
 
     let W = canvas.width  = window.innerWidth;
     let H = canvas.height = window.innerHeight;
@@ -38,7 +39,7 @@ export default function ParticlesBackground() {
       });
 
       // connection lines only on desktop
-      if (!isMobile) {
+      if (CONNECT) {
         for (let i = 0; i < particles.length; i++) {
           for (let j = i + 1; j < particles.length; j++) {
             const d = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);

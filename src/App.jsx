@@ -1,19 +1,21 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Preloader from './components/Preloader';
 import CursorGlow from './components/CursorGlow';
-import ParticlesBackground from './components/ParticlesBackground';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import Tracks from './components/Tracks';
-import Timeline from './components/Timeline';
-import Prizes from './components/Prizes';
-import Rules from './components/Rules';
 import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
 import Chatbot from './components/Chatbot';
+
+// Lazy load heavy sections
+const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
+const About    = lazy(() => import('./components/About'));
+const Tracks   = lazy(() => import('./components/Tracks'));
+const Timeline = lazy(() => import('./components/Timeline'));
+const Prizes   = lazy(() => import('./components/Prizes'));
+const Rules    = lazy(() => import('./components/Rules'));
 
 const isAdmin = window.location.pathname === '/admin';
 
@@ -31,19 +33,21 @@ export default function App() {
       <AnimatePresence>
         {loaded && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-            <ParticlesBackground />
+            <Suspense fallback={null}><ParticlesBackground /></Suspense>
             <div className="fixed inset-0 z-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,92,246,0.15) 0%, transparent 60%)' }} />
 
             <Navbar onRegister={() => setShowModal(true)} />
 
             <main className="relative z-10">
-              <Hero onRegister={() => setShowModal(true)} />
-              <About />
-              <Tracks />
-              <Timeline />
-              <Prizes />
-              <Rules />
+              <Suspense fallback={null}>
+                <Hero onRegister={() => setShowModal(true)} />
+                <About />
+                <Tracks />
+                <Timeline />
+                <Prizes />
+                <Rules />
+              </Suspense>
             </main>
 
             <Footer />

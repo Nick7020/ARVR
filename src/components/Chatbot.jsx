@@ -239,7 +239,42 @@ export default function Chatbot() {
         )}
       </AnimatePresence>
 
-      {/* ── FAB BUTTON — Robot Face ── */}
+      {/* ── FLOATING HINT BUBBLE ── */}
+      <AnimatePresence>
+        {!open && (
+          <motion.div
+            className="fixed bottom-24 right-4 sm:right-6 z-[9979]"
+            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 20 }}
+            transition={{ delay: 2, type: 'spring', stiffness: 260, damping: 20 }}
+          >
+            <motion.div
+              className="relative px-4 py-2.5 rounded-2xl rounded-br-sm text-xs font-medium text-white max-w-[200px] text-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(124,58,237,0.95), rgba(37,99,235,0.95))',
+                border: '1px solid rgba(139,92,246,0.5)',
+                boxShadow: '0 0 20px rgba(139,92,246,0.3)',
+                backdropFilter: 'blur(10px)',
+              }}
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              💬 Any doubt? I'm here for all your queries!
+              {/* Tail */}
+              <div className="absolute -bottom-2 right-4 w-0 h-0"
+                style={{
+                  borderLeft: '6px solid transparent',
+                  borderRight: '6px solid transparent',
+                  borderTop: '8px solid rgba(37,99,235,0.95)',
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── FAB BUTTON — Robot Face ── */}}
       <motion.button
         className="fixed bottom-6 right-4 sm:right-6 z-[9980] flex items-center justify-center"
         style={{

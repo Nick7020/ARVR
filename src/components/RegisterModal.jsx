@@ -1,338 +1,95 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { IconUser, IconMail, IconPhone, IconCertificate, IconSchool, IconBolt, IconUsers, IconChevronRight, IconChevronLeft, IconRocket } from '@tabler/icons-react';
 import HackathonTicket from './HackathonTicket';
 
 const API = import.meta.env.VITE_API_URL || '';
 
-const fields = [
-  { name: 'name',        label: 'Your Name',                      type: 'text',     placeholder: 'John Doe',            icon: '👤' },
-  { name: 'email',       label: 'Email Address',                  type: 'email',    placeholder: 'john@example.com',    icon: '📧' },
-  { name: 'phone',       label: 'Phone Number',                   type: 'tel',      placeholder: '+91 9876543210',      icon: '📱' },
-  { name: 'branch',      label: 'Branch',                         type: 'text',     placeholder: 'MCA / B.Tech CSE',    icon: '🎓' },
-  { name: 'collegeName', label: 'College Name',                   type: 'text',     placeholder: 'Your college name',   icon: '🏫' },
-  { name: 'teamName',    label: 'Team Name',                      type: 'text',     placeholder: 'Team Nexus',          icon: '⚡' },
-  { name: 'teamMembers', label: 'Team Members (comma separated)', type: 'textarea', placeholder: 'Alice, Bob, Charlie', icon: '👥' },
+const step1Fields = [
+  { name: 'name', label: 'Full Name', type: 'text', placeholder: 'Commander Shepard', icon: <IconUser size={18} /> },
+  { name: 'email', label: 'Email Address', type: 'email', placeholder: 'shepard@normandy.com', icon: <IconMail size={18} /> },
+  { name: 'phone', label: 'Phone Number', type: 'tel', placeholder: '+91 9876543210', icon: <IconPhone size={18} /> },
 ];
 
-/* ── Floating label input ── */
+const step2Fields = [
+  { name: 'branch', label: 'Branch / Specialization', type: 'text', placeholder: 'B.Tech CSE / MCA', icon: <IconCertificate size={18} /> },
+  { name: 'collegeName', label: 'Academy Name', type: 'text', placeholder: 'Your College', icon: <IconSchool size={18} /> },
+];
+
+function loadRazorpay() {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 function Field({ f, value, onChange, index }) {
   const [focused, setFocused] = useState(false);
   const hasValue = value.length > 0;
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.07, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="relative"
-    >
-      <motion.div
-        className="absolute inset-0 rounded-xl pointer-events-none"
-        animate={{
-          boxShadow: focused
-            ? '0 0 0 1px rgba(139,92,246,0.8), 0 0 20px rgba(139,92,246,0.25)'
-            : '0 0 0 1px rgba(139,92,246,0.15)',
-        }}
-        transition={{ duration: 0.25 }}
-      />
+    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1, duration: 0.4 }} className="relative mb-5">
+      <motion.div className="absolute inset-0 rounded-xl" animate={{ background: focused ? 'rgba(0, 240, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)' }} transition={{ duration: 0.3 }} />
+      <motion.div className="absolute inset-0 rounded-xl pointer-events-none" style={{ border: '1px solid rgba(0, 240, 255, 0.1)' }} animate={{ borderColor: focused ? 'rgba(0, 240, 255, 0.6)' : 'rgba(0, 240, 255, 0.1)', boxShadow: focused ? '0 0 15px rgba(0, 240, 255, 0.15)' : 'none' }} transition={{ duration: 0.2 }} />
+      
       <motion.label
-        className="absolute left-10 font-semibold tracking-widest uppercase pointer-events-none z-10 px-1"
-        style={{ background: 'rgba(10,0,30,1)' }}
-        animate={{
-          top:      focused || hasValue ? -8 : f.type === 'textarea' ? 14 : '50%',
-          fontSize: focused || hasValue ? 9  : 12,
-          color:    focused ? '#a855f7' : hasValue ? '#7c3aed' : 'rgba(139,92,246,0.45)',
-          y:        focused || hasValue ? 0  : f.type === 'textarea' ? 0 : '-50%',
-        }}
+        className="absolute left-10 font-bold tracking-widest uppercase pointer-events-none z-10 px-1"
+        style={{ background: 'rgba(9, 2, 28, 1)' }}
+        animate={{ top: focused || hasValue ? -8 : '50%', fontSize: focused || hasValue ? 10 : 13, color: focused ? '#00f0ff' : hasValue ? '#a855f7' : '#6b7280', y: focused || hasValue ? 0 : '-50%' }}
         transition={{ duration: 0.2 }}
       >
         {f.label}
       </motion.label>
-      <motion.span
-        className="absolute left-3 text-base pointer-events-none"
-        style={{ top: f.type === 'textarea' ? 14 : '50%', transform: f.type === 'textarea' ? 'none' : 'translateY(-50%)' }}
-        animate={{ scale: focused ? 1.2 : 1, rotate: focused ? 10 : 0 }}
-        transition={{ type: 'spring', stiffness: 400 }}
-      >{f.icon}</motion.span>
-      {f.type === 'textarea' ? (
-        <textarea name={f.name} value={value} onChange={onChange} rows={3} required
-          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-          className="w-full rounded-xl pl-10 pr-4 pt-5 pb-3 text-sm text-white placeholder-transparent outline-none resize-none"
-          style={{ background: 'rgba(139,92,246,0.06)' }} placeholder={f.placeholder} />
-      ) : (
-        <input type={f.type} name={f.name} value={value} onChange={onChange} required
-          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-          className="w-full rounded-xl pl-10 pr-8 py-3.5 text-sm text-white placeholder-transparent outline-none"
-          style={{ background: 'rgba(139,92,246,0.06)' }} placeholder={f.placeholder} />
-      )}
-      <AnimatePresence>
-        {hasValue && !focused && (
-          <motion.span className="absolute right-3 top-1/2 -translate-y-1/2 text-cyan-400 text-xs font-bold"
-            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }}>✓</motion.span>
-        )}
-      </AnimatePresence>
+      
+      <motion.span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" animate={{ color: focused ? '#00f0ff' : '#6b7280' }}>
+        {f.icon}
+      </motion.span>
+      
+      <input type={f.type} name={f.name} value={value} onChange={onChange} required onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} className="w-full rounded-xl pl-10 pr-8 py-3.5 text-sm text-cyan-50 placeholder-transparent outline-none bg-transparent" placeholder={f.placeholder} />
     </motion.div>
   );
 }
 
-/* ══════════════════════════════════════
-   ROCKET LAUNCH CINEMATIC SEQUENCE
-══════════════════════════════════════ */
 function RocketLaunch({ onDone }) {
-  const [phase, setPhase] = useState('countdown'); // countdown → ignite → launch → space → success
-
+  const [phase, setPhase] = useState('countdown');
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase('ignite'),    2200),
-      setTimeout(() => setPhase('launch'),    3400),
-      setTimeout(() => setPhase('space'),     5200),
-      setTimeout(() => setPhase('success'),   7000),
+      setTimeout(() => setPhase('ignite'), 2200),
+      setTimeout(() => setPhase('launch'), 3400),
+      setTimeout(() => setPhase('space'), 5200),
+      setTimeout(() => setPhase('success'), 7000),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  const stars = Array.from({ length: 60 }, (_, i) => ({
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 2 + 0.5,
-    delay: Math.random() * 2,
-  }));
-
-  const confetti = Array.from({ length: 40 }, (_, i) => ({
-    color: ['#a855f7','#3b82f6','#22d3ee','#ec4899','#f59e0b','#10b981'][i % 6],
-    x: Math.random() * 100,
-    delay: Math.random() * 0.8,
-    size: Math.random() * 10 + 5,
-  }));
-
   return (
-    <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: 'radial-gradient(ellipse at center, #0d0025 0%, #020010 100%)' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      {/* Stars background */}
-      {stars.map((s, i) => (
-        <motion.div key={i}
-          className="absolute rounded-full bg-white pointer-events-none"
-          style={{ left: `${s.x}%`, top: `${s.y}%`, width: s.size, height: s.size }}
-          animate={{ opacity: [0.2, 1, 0.2] }}
-          transition={{ duration: 2, repeat: Infinity, delay: s.delay }}
-        />
-      ))}
-
-      {/* ── COUNTDOWN PHASE ── */}
+    <motion.div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden" style={{ background: 'radial-gradient(ellipse at center, #0d0025 0%, #020010 100%)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
       <AnimatePresence>
         {phase === 'countdown' && (
-          <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            exit={{ opacity: 0, scale: 2 }} transition={{ duration: 0.4 }}>
-            {/* Countdown numbers */}
+          <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-10" exit={{ opacity: 0, scale: 2 }}>
             {[3, 2, 1].map((n, i) => (
-              <motion.div key={n}
-                className="absolute text-8xl font-black"
-                style={{ background: 'linear-gradient(135deg, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.8))' }}
-                initial={{ opacity: 0, scale: 3 }}
-                animate={{ opacity: [0, 1, 1, 0], scale: [3, 1, 1, 0.5] }}
-                transition={{ duration: 0.7, delay: i * 0.72, times: [0, 0.2, 0.8, 1] }}
-              >{n}</motion.div>
+              <motion.div key={n} className="absolute text-8xl font-black text-cyan-400" initial={{ opacity: 0, scale: 3 }} animate={{ opacity: [0, 1, 1, 0], scale: [3, 1, 1, 0.5] }} transition={{ duration: 0.7, delay: i * 0.72 }}>{n}</motion.div>
             ))}
-            <motion.p
-              className="absolute text-purple-400/60 text-sm tracking-[0.4em] uppercase"
-              style={{ bottom: '35%' }}
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 0.7, repeat: Infinity }}
-            >Preparing Launch...</motion.p>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* ── LAUNCH PAD ── */}
       <AnimatePresence>
         {(phase === 'ignite' || phase === 'launch') && (
-          <motion.div className="absolute inset-0 flex flex-col items-end justify-end pb-16 z-10"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-
-            {/* Launch pad base */}
-            <motion.div className="w-full flex flex-col items-center"
-              animate={phase === 'launch' ? { y: -800, opacity: 0 } : {}}
-              transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1], delay: 0.3 }}
-            >
-              {/* Rocket */}
-              <motion.div className="relative flex flex-col items-center"
-                animate={phase === 'ignite' ? { y: [0, -8, 0, -5, 0] } : {}}
-                transition={{ duration: 0.3, repeat: phase === 'ignite' ? Infinity : 0 }}
-              >
-                {/* Rocket body */}
-                <div className="text-7xl" style={{ filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.9))' }}>🚀</div>
-
-                {/* Flame */}
-                <AnimatePresence>
-                  {(phase === 'ignite' || phase === 'launch') && (
-                    <motion.div className="absolute -bottom-6 flex flex-col items-center"
-                      initial={{ opacity: 0, scaleY: 0 }}
-                      animate={{ opacity: 1, scaleY: [1, 1.4, 0.8, 1.2, 1] }}
-                      transition={{ duration: 0.15, repeat: Infinity }}
-                    >
-                      <div className="text-3xl">🔥</div>
-                      <motion.div className="w-2 rounded-full mt-1"
-                        style={{ background: 'linear-gradient(180deg, #f59e0b, #ef4444, transparent)', height: 40 }}
-                        animate={{ scaleX: [1, 1.5, 0.8, 1.3, 1], opacity: [1, 0.8, 1] }}
-                        transition={{ duration: 0.1, repeat: Infinity }}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-
-              {/* Smoke clouds on ignite */}
-              <AnimatePresence>
-                {phase === 'ignite' && (
-                  <motion.div className="flex gap-2 mt-8"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    {[...Array(5)].map((_, i) => (
-                      <motion.div key={i}
-                        className="rounded-full"
-                        style={{ width: 20 + i * 8, height: 20 + i * 8, background: 'rgba(200,200,255,0.15)', filter: 'blur(4px)' }}
-                        animate={{ scale: [1, 1.5, 1], x: (i - 2) * 10, opacity: [0.3, 0.6, 0.3] }}
-                        transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }}
-                      />
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Launch pad */}
-              <div className="w-32 h-3 rounded-full mt-2"
-                style={{ background: 'linear-gradient(90deg, #a855f7, #3b82f6)', boxShadow: '0 0 20px rgba(139,92,246,0.6)' }} />
-              <div className="w-48 h-2 rounded-full mt-1 opacity-50"
-                style={{ background: 'rgba(139,92,246,0.3)' }} />
+          <motion.div className="absolute inset-0 flex flex-col items-center justify-end pb-32" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div animate={phase === 'launch' ? { y: -1000, opacity: 0 } : {}} transition={{ duration: 1.5, ease: 'easeIn' }}>
+              <div className="text-8xl filter drop-shadow-[0_0_20px_#a855f7]">🚀</div>
             </motion.div>
-
-            {/* Ground glow */}
-            <motion.div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at 50% 100%, rgba(139,92,246,0.3) 0%, transparent 70%)' }}
-              animate={phase === 'launch' ? { opacity: [1, 2, 0] } : { opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: phase === 'launch' ? 1 : 0.5, repeat: phase === 'ignite' ? Infinity : 0 }}
-            />
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* ── SPACE PHASE ── */}
-      <AnimatePresence>
-        {phase === 'space' && (
-          <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {/* Rocket flying in space */}
-            <motion.div
-              className="text-6xl"
-              style={{ filter: 'drop-shadow(0 0 30px rgba(139,92,246,1))' }}
-              initial={{ y: 300, opacity: 0 }}
-              animate={{ y: [-20, 20, -20], opacity: 1 }}
-              transition={{ y: { duration: 2, repeat: Infinity }, opacity: { duration: 0.5 } }}
-            >🚀</motion.div>
-
-            {/* Speed lines */}
-            {[...Array(12)].map((_, i) => (
-              <motion.div key={i}
-                className="absolute h-px"
-                style={{
-                  width: 40 + Math.random() * 80,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  background: `rgba(${i % 2 === 0 ? '139,92,246' : '34,211,238'},0.4)`,
-                }}
-                animate={{ x: [100, -200], opacity: [0, 1, 0] }}
-                transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
-              />
-            ))}
-
-            <motion.p
-              className="absolute text-cyan-400/70 text-sm tracking-[0.4em] uppercase mt-32"
-              style={{ top: '60%' }}
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 1, repeat: Infinity }}
-            >Entering Orbit...</motion.p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── SUCCESS PHASE ── */}
       <AnimatePresence>
         {phase === 'success' && (
-          <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6 text-center"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-
-            {/* Confetti */}
-            {confetti.map((c, i) => (
-              <motion.div key={i}
-                className="absolute rounded-sm pointer-events-none"
-                style={{ width: c.size, height: c.size / 2, background: c.color, left: `${c.x}%`, top: '-5%' }}
-                animate={{ y: ['0vh', '110vh'], rotate: [0, 720], opacity: [1, 1, 0] }}
-                transition={{ duration: 2.5 + Math.random(), delay: c.delay, ease: 'linear' }}
-              />
-            ))}
-
-            {/* Success icon */}
-            <motion.div
-              className="w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-6"
-              style={{
-                background: 'linear-gradient(135deg, rgba(139,92,246,0.3), rgba(34,211,238,0.2))',
-                border: '2px solid rgba(34,211,238,0.7)',
-                boxShadow: '0 0 40px rgba(34,211,238,0.5), 0 0 80px rgba(139,92,246,0.3)',
-              }}
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 180, damping: 12 }}
-            >🚀</motion.div>
-
-            {/* Pulsing rings */}
-            {[100, 140, 180].map((size, i) => (
-              <motion.div key={i}
-                className="absolute rounded-full border pointer-events-none"
-                style={{ width: size, height: size, borderColor: 'rgba(34,211,238,0.3)' }}
-                animate={{ scale: [1, 1.6], opacity: [0.8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.4 }}
-              />
-            ))}
-
-            <motion.h2
-              className="text-4xl font-black mb-2"
-              style={{ background: 'linear-gradient(135deg, #fff 0%, #a855f7 50%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 15px rgba(139,92,246,0.7))' }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >You're Registered!</motion.h2>
-
-            <motion.p className="text-cyan-300 text-lg font-semibold mb-1"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-              🎉 Welcome to AR/VR Hackathon 2026
-            </motion.p>
-            <motion.p className="text-gray-400 text-sm mb-8"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-              ZIBACAR · In Collaboration with IIT Mandi
-            </motion.p>
-
-            <motion.button
-              onClick={onDone}
-              className="relative px-12 py-4 rounded-2xl font-black text-white text-base overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(139,92,246,0.6)' }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 }}
-            >
-              <motion.span
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)' }}
-                animate={{ x: ['-100%', '200%'] }}
-                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
-              />
-              <span className="relative z-10">🌟 Let's Go!</span>
-            </motion.button>
+          <motion.div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h2 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 mb-6 drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]">ACCESS GRANTED</h2>
+            <button onClick={onDone} className="px-10 py-4 rounded-xl font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 hover:bg-cyan-400/30 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">Enter Protocol System</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -340,194 +97,216 @@ function RocketLaunch({ onDone }) {
   );
 }
 
-/* ══════════════════════════════════════
-   MAIN MODAL
-══════════════════════════════════════ */
 export default function RegisterModal({ onClose }) {
-  const [form, setForm]       = useState({ name:'', email:'', phone:'', branch:'', collegeName:'', teamName:'', teamMembers:'' });
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({ name:'', email:'', phone:'', branch:'', collegeName:'', teamName:'' });
+  const [teamSize, setTeamSize] = useState(1);
+  const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus]   = useState(null);
-  const [launched, setLaunched]   = useState(false);
+  const [status, setStatus] = useState(null);
+  const [launched, setLaunched] = useState(false);
   const [showTicket, setShowTicket] = useState(false);
 
-  // Show cursor during rocket animation
-  useEffect(() => {
-    if (launched) {
-      document.body.style.cursor = 'auto';
-    } else {
-      document.body.style.cursor = 'none';
-    }
-    return () => { document.body.style.cursor = 'none'; };
-  }, [launched]);
-
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  const handleMemberChange = (index, value) => {
+    const updated = [...teamMembers];
+    updated[index] = value;
+    setTeamMembers(updated);
+  };
+
+  const nextStep = () => {
+    if (step === 1 && (!form.name || !form.email || !form.phone)) return setStatus({ ok: false, msg: 'Complete commander details to proceed.' });
+    if (step === 2 && (!form.branch || !form.collegeName)) return setStatus({ ok: false, msg: 'Complete academic intel to proceed.' });
+    setStatus(null);
+    setStep(s => s + 1);
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!form.teamName) return setStatus({ ok: false, msg: 'Assign a squad name.' });
+    if (teamSize > 1 && teamMembers.some(m => !m.trim())) return setStatus({ ok: false, msg: 'Provide all team member names.' });
+    
     setLoading(true);
     setStatus(null);
 
-    // retry logic — 3 attempts
-    let attempts = 0;
-    const maxAttempts = 3;
+    const isLoaded = await loadRazorpay();
+    if (!isLoaded) return setStatus({ ok: false, msg: 'Checkout system offline.' }), setLoading(false);
 
-    while (attempts < maxAttempts) {
-      try {
-        attempts++;
-        const res = await fetch(`${API}/api/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
-        const data = await res.json();
-        if (data.success) {
-          setLaunched(true);
-          setLoading(false);
-          return;
-        } else {
-          setStatus({ ok: false, msg: data.message });
-          setLoading(false);
-          return;
-        }
-      } catch (err) {
-        if (attempts < maxAttempts) {
-          setStatus({ ok: false, msg: `Connecting to server... attempt ${attempts}/${maxAttempts} ⏳` });
-          await new Promise(r => setTimeout(r, 3000)); // wait 3 sec before retry
-        } else {
-          setStatus({ ok: false, msg: '❌ Server unreachable. Please try again in a minute.' });
-        }
+    try {
+      const orderRes = await fetch(`${API}/api/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teamSize }),
+      });
+      const orderData = await orderRes.json();
+
+      if (!orderData.success) {
+        setStatus({ ok: false, msg: orderData.message || 'Payment link failed.' });
+        setLoading(false);
+        return;
       }
-    }
-    setLoading(false);
-  };
 
-  const filled   = Object.values(form).filter(v => v.trim()).length;
-  const progress = Math.round((filled / fields.length) * 100);
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'dummy_key',
+        amount: orderData.order.amount,
+        currency: 'INR',
+        name: 'AR/VR Hackathon 2026',
+        description: 'Registration Fee',
+        order_id: orderData.order.id,
+        handler: async function (response) {
+          try {
+            const registerRes = await fetch(`${API}/api/register`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...form, teamSize, teamMembers, razorpayPaymentId: response.razorpay_payment_id, razorpayOrderId: response.razorpay_order_id, razorpaySignature: response.razorpay_signature }),
+            });
+            const data = await registerRes.json();
+            if (data.success) {
+              setLaunched(true);
+            } else {
+              setStatus({ ok: false, msg: data.message });
+            }
+          } catch(err) {
+            setStatus({ ok: false, msg: 'Network failure upon verification.' });
+          }
+          setLoading(false);
+        },
+        prefill: { name: form.name, email: form.email, contact: form.phone },
+        theme: { color: '#00f0ff' }
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.on('payment.failed', function () {
+        setStatus({ ok: false, msg: 'Payment failed. Use GPay or PhonePe.' });
+        setLoading(false);
+      });
+      paymentObject.open();
+    } catch (err) {
+      setStatus({ ok: false, msg: 'Server unreachable.' });
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      {/* Rocket launch fullscreen overlay */}
-      <AnimatePresence>
-        {launched && <RocketLaunch onDone={() => { setLaunched(false); setShowTicket(true); }} />}
-      </AnimatePresence>
+      <AnimatePresence>{launched && <RocketLaunch onDone={() => { setLaunched(false); setShowTicket(true); }} />}</AnimatePresence>
+      <AnimatePresence>{showTicket && <HackathonTicket form={form} onClose={onClose} />}</AnimatePresence>
 
-      {/* Ticket */}
       <AnimatePresence>
-        {showTicket && <HackathonTicket form={form} onClose={onClose} />}
-      </AnimatePresence>
-
-      {/* Form modal */}
-      <AnimatePresence>
-        {!launched && (
-          <motion.div
-            className="fixed inset-0 z-[9990] flex items-center justify-center p-4"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          >
+        {!launched && !showTicket && (
+          <motion.div className="fixed inset-0 z-[9990] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="absolute inset-0" onClick={onClose} />
             <motion.div
-              className="absolute inset-0"
-              style={{ background: 'rgba(2,0,16,0.9)', backdropFilter: 'blur(16px)' }}
-              onClick={onClose}
-            />
-
-            <motion.div
-              className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl z-10"
-              style={{
-                background: 'linear-gradient(145deg, rgba(15,5,45,0.99), rgba(5,0,25,0.99))',
-                border: '1px solid rgba(139,92,246,0.3)',
-                boxShadow: '0 0 80px rgba(139,92,246,0.2)',
-              }}
-              initial={{ opacity: 0, scale: 0.8, y: 60, rotateX: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 60 }}
-              transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+              className="relative w-full max-w-md overflow-hidden rounded-[2rem] z-10"
+              style={{ background: 'rgba(9, 2, 28, 0.95)', border: '1px solid rgba(0, 240, 255, 0.2)', boxShadow: '0 0 50px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05)' }}
+              initial={{ scale: 0.9, y: 40, rotateX: 10 }} animate={{ scale: 1, y: 0, rotateX: 0 }} exit={{ scale: 0.9, y: 40, opacity: 0 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
-              {/* Progress bar top */}
-              <div className="relative h-1 w-full rounded-t-3xl overflow-hidden">
-                <div className="absolute inset-0" style={{ background: 'rgba(139,92,246,0.15)' }} />
-                <motion.div className="h-full"
-                  style={{ background: 'linear-gradient(90deg, #a855f7, #3b82f6, #22d3ee)' }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.4 }}
-                />
+              {/* Stepper Header */}
+              <div className="px-6 pt-6 pb-2 border-b border-cyan-500/10">
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center gap-2">
+                    <IconRocket className="text-cyan-400" size={24} />
+                    <h2 className="text-xl font-black tracking-widest uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Initialize</h2>
+                  </div>
+                  <button onClick={onClose} className="text-cyan-600 hover:text-cyan-300 transition-colors"><div className="text-xl border border-cyan-600/30 rounded-full w-8 h-8 flex items-center justify-center pb-1">&times;</div></button>
+                </div>
+                
+                <div className="flex justify-between relative mb-2">
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5 bg-gray-800 z-0" />
+                  <motion.div className="absolute top-1/2 -translate-y-1/2 left-0 h-0.5 bg-cyan-400 z-0 shadow-[0_0_8px_#00f0ff]" animate={{ width: `${((step - 1) / 2) * 100}%` }} transition={{ duration: 0.5 }} />
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className={`relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${step >= i ? 'bg-cyan-950 border-2 border-cyan-400 text-cyan-300 shadow-[0_0_10px_rgba(0,240,255,0.4)]' : 'bg-gray-900 border border-gray-700 text-gray-500'}`}>
+                      {i}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500 tracking-wider">
+                  <span className={step >= 1 ? 'text-cyan-400' : ''}>Commander</span>
+                  <span className={step >= 2 ? 'text-cyan-400 text-center' : ''}>Academic</span>
+                  <span className={step >= 3 ? 'text-cyan-400 text-right' : ''}>Squad</span>
+                </div>
               </div>
 
               <div className="p-6">
-                {/* Header */}
-                <motion.div className="flex items-start justify-between mb-5"
-                  initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <motion.span className="text-2xl"
-                        animate={{ rotate: [0, 15, -15, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}>🥽</motion.span>
-                      <h2 className="text-2xl font-black"
-                        style={{ background: 'linear-gradient(135deg, #fff, #a855f7, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                        Register Now
-                      </h2>
-                    </div>
-                    <p className="text-gray-500 text-xs tracking-widest uppercase">AR/VR Hackathon 2026 · ZIBACAR</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-purple-400/60">{filled}/{fields.length} fields</span>
-                      <div className="flex gap-1">
-                        {fields.map((_, i) => (
-                          <motion.div key={i} className="w-1.5 h-1.5 rounded-full"
-                            animate={{ background: i < filled ? '#a855f7' : 'rgba(139,92,246,0.2)' }}
-                            transition={{ duration: 0.3 }} />
-                        ))}
+                <AnimatePresence mode="wait">
+                  <motion.div key={step} initial={{ x: 40, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -40, opacity: 0 }} transition={{ duration: 0.3 }}>
+                    
+                    {step === 1 && (
+                      <div className="space-y-2">
+                        {step1Fields.map((f, i) => <Field key={f.name} f={f} value={form[f.name]} onChange={handleChange} index={i} />)}
                       </div>
-                    </div>
-                  </div>
-                  <motion.button onClick={onClose}
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-white flex-shrink-0"
-                    style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}
-                    whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }}>✕</motion.button>
-                </motion.div>
+                    )}
 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  {fields.map((f, i) => (
-                    <Field key={f.name} f={f} value={form[f.name]} onChange={handleChange} index={i} />
-                  ))}
+                    {step === 2 && (
+                      <div className="space-y-2">
+                        {step2Fields.map((f, i) => <Field key={f.name} f={f} value={form[f.name]} onChange={handleChange} index={i} />)}
+                      </div>
+                    )}
 
-                  <AnimatePresence>
+                    {step === 3 && (
+                      <div className="space-y-2">
+                        <Field f={{ name: 'teamName', label: 'Squad Designation', type: 'text', placeholder: 'Alpha Protocol', icon: <IconBolt size={18} /> }} value={form.teamName} onChange={handleChange} index={0} />
+                        
+                        <div className="relative mb-5" style={{ animationDelay: '0.1s' }}>
+                          <label className="absolute -top-3 left-3 bg-[#09021c] px-2 text-[10px] font-bold text-purple-500 tracking-widest uppercase z-10">Squad Size</label>
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-purple-500"><IconUsers size={18} /></div>
+                          <select
+                            value={teamSize}
+                            onChange={(e) => {
+                              const size = parseInt(e.target.value);
+                              setTeamSize(size);
+                              setTeamMembers(new Array(size - 1).fill(''));
+                            }}
+                            className="w-full rounded-xl pl-10 pr-8 py-3.5 text-sm text-cyan-50 outline-none bg-transparent appearance-none border border-purple-500/30 hover:border-purple-400 focus:border-purple-400 focus:shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all cursor-pointer"
+                          >
+                            {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n} className="bg-gray-900 text-teal-50">{n} Member{n > 1 ? 's' : ''}</option>)}
+                          </select>
+                        </div>
+
+                        {teamSize > 1 && teamMembers.map((member, i) => (
+                          <Field key={`m-${i}`} f={{ name: `m${i}`, label: `Operative ${i + 2}`, type: 'text', placeholder: `Name of member ${i+2}`, icon: <IconUser size={18} /> }} value={member} onChange={(e) => handleMemberChange(i, e.target.value)} index={i+2} />
+                        ))}
+
+                        <div className="rounded-xl border border-cyan-500/30 bg-cyan-950/30 p-4 text-center">
+                          <div className="text-xs uppercase tracking-widest text-cyan-500/70 font-black mb-1">Authorization Fee</div>
+                          <div className="text-3xl font-black text-cyan-300">₹{teamSize > 1 ? 100 : 50}</div>
+                        </div>
+                        
+                        <div className="text-[10px] text-center text-amber-500/80 uppercase font-bold tracking-wider mt-2 border border-amber-500/20 bg-amber-950/20 rounded-lg p-2">
+                          Use GPay or PhonePe via Razorpay.<br/>FamPay is not authorized.
+                        </div>
+                      </div>
+                    )}
+
                     {status && !status.ok && (
-                      <motion.div
-                        className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs text-red-400"
-                        style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
-                        initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-                      >⚠ {status.msg}</motion.div>
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="text-xs text-red-400 bg-red-950/40 border border-red-500/30 p-3 rounded-xl text-center font-bold tracking-wide mt-4">
+                        ⚠️ {status.msg}
+                      </motion.div>
                     )}
-                  </AnimatePresence>
 
-                  <motion.button
-                    type="submit"
-                    disabled={loading}
-                    className="relative w-full py-4 rounded-xl font-black text-white text-base overflow-hidden mt-1"
-                    style={{ background: loading ? 'rgba(139,92,246,0.2)' : 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
-                    whileHover={!loading ? { scale: 1.02, boxShadow: '0 0 30px rgba(139,92,246,0.5)' } : {}}
-                    whileTap={!loading ? { scale: 0.97 } : {}}
-                  >
-                    {!loading && (
-                      <motion.span className="absolute inset-0"
-                        style={{ background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%)' }}
-                        animate={{ x: ['-100%', '200%'] }}
-                        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1.5 }} />
-                    )}
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      {loading ? (
-                        <>
-                          <motion.span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent"
-                            animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: 'linear' }} />
-                          Launching...
-                        </>
-                      ) : (
-                        <>
-                          <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}>🚀</motion.span>
-                          Launch Registration
-                        </>
-                      )}
-                    </span>
-                  </motion.button>
-                </form>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="flex gap-3 justify-between mt-6">
+                  {step > 1 && (
+                    <button onClick={() => setStep(s => s - 1)} className="px-5 py-3.5 rounded-xl border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-white transition-all font-bold flex items-center justify-center cursor-pointer">
+                      <IconChevronLeft size={20} />
+                    </button>
+                  )}
+                  
+                  {step < 3 ? (
+                    <button onClick={nextStep} className="flex-1 py-3.5 rounded-xl font-black text-xs tracking-[0.2em] uppercase text-black bg-cyan-400 hover:bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all flex items-center justify-center gap-2">
+                      Proceed <IconChevronRight size={18} />
+                    </button>
+                  ) : (
+                    <button onClick={handleSubmit} disabled={loading} className="flex-1 py-3.5 rounded-xl font-black text-xs tracking-[0.2em] uppercase text-white overflow-hidden relative" style={{ background: loading ? 'rgba(34,211,238,0.2)' : 'linear-gradient(135deg, #00f0ff, #7000ff)' }}>
+                      <motion.span className="absolute inset-0 z-0" animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }} style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)', backgroundSize: '200% 100%' }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        {loading ? 'Processing Protocol...' : 'Launch Registration'}
+                      </span>
+                    </button>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>

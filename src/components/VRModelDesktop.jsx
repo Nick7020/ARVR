@@ -57,17 +57,16 @@ export default function VRModelDesktop() {
     <div className="w-full h-full">
       <Canvas
         camera={{ position: [0, 0.2, 5], fov: 42 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
+        dpr={[1, 1.5]}
         style={{ background: 'transparent', width: '100%', height: '100%' }}
       >
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[0, 3, 5]}  intensity={3.5} color="#ffffff" />
-        <directionalLight position={[-3, 2, 3]} intensity={2}   color="#ffe0c0" />
-        <pointLight       position={[-3, 2, 4]} intensity={3}   color="#a855f7" />
-        <pointLight       position={[3, -1, 3]} intensity={2.5} color="#22d3ee" />
-        <spotLight        position={[0, 5, 5]}  intensity={4}   color="#ffe8d0" angle={0.45} penumbra={0.8} />
+        <ambientLight intensity={1} />
+        <pointLight       position={[-3, 2, 4]} intensity={5}   color="#a855f7" />
+        <pointLight       position={[3, -1, 3]} intensity={4} color="#22d3ee" />
+        <spotLight        position={[0, 5, 5]}  intensity={4}   color="#ffffff" angle={0.45} penumbra={0.8} />
 
-        <Stars radius={35} depth={25} count={400} factor={2} fade speed={0.4} />
+        <Stars radius={35} depth={20} count={150} factor={2} fade speed={0.4} />
 
         <Float speed={1.2} rotationIntensity={0.08} floatIntensity={0.25}>
           <Model />

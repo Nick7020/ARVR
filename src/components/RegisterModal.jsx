@@ -48,7 +48,7 @@ function Field({ f, value, onChange, index }) {
         {f.icon}
       </motion.span>
       
-      <input type={f.type} name={f.name} value={value} onChange={onChange} required onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} className="w-full rounded-xl pl-10 pr-8 py-3.5 text-sm text-cyan-50 placeholder-transparent outline-none bg-transparent" placeholder={f.placeholder} />
+      <input type={f.type} name={f.name} value={value} onChange={onChange} required onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} className="w-full rounded-xl pl-10 pr-8 py-3.5 text-sm text-cyan-50 placeholder-transparent outline-none bg-transparent relative z-10" placeholder={f.placeholder} style={{ position: 'relative', zIndex: 10 }} />
     </motion.div>
   );
 }
@@ -194,10 +194,10 @@ export default function RegisterModal({ onClose }) {
 
       <AnimatePresence>
         {!launched && !showTicket && (
-          <motion.div className="fixed inset-0 z-[9990] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 cursor-pointer" onClick={onClose} style={{ zIndex: 0 }} />
+          <motion.div className="fixed inset-0 z-[9990] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <div className="absolute inset-0" onClick={onClose} />
             <motion.div
-              className="relative w-full max-w-md overflow-hidden rounded-[2rem] z-10"
+              className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-[2rem] z-[9991]"
               style={{ background: 'rgba(9, 2, 28, 0.95)', border: '1px solid rgba(0, 240, 255, 0.2)', boxShadow: '0 0 50px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05)' }}
               initial={{ scale: 0.9, y: 40, rotateX: 10 }} animate={{ scale: 1, y: 0, rotateX: 0 }} exit={{ scale: 0.9, y: 40, opacity: 0 }} transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >

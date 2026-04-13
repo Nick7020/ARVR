@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import * as XLSX from 'xlsx';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://arvr-drab.vercel.app';
 const ADMIN_PASSWORD = 'zibacar2026'; // simple frontend guard
 
 export default function AdminPage() {

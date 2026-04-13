@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { IconUser, IconMail, IconPhone, IconCertificate, IconSchool, IconBolt, IconUsers, IconChevronRight, IconChevronLeft, IconRocket } from '@tabler/icons-react';
 import HackathonTicket from './HackathonTicket';
 
-const API = import.meta.env.VITE_API_URL || '';
+const API = import.meta.env.VITE_API_URL || 'https://arvr-drab.vercel.app';
 
 const step1Fields = [
   { name: 'name', label: 'Full Name', type: 'text', placeholder: 'Commander Shepard', icon: <IconUser size={18} /> },

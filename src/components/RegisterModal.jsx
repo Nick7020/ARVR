@@ -195,7 +195,7 @@ export default function RegisterModal({ onClose }) {
       <AnimatePresence>
         {!launched && !showTicket && (
           <motion.div className="fixed inset-0 z-[9990] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="absolute inset-0" onClick={onClose} />
+            <div className="absolute inset-0 cursor-pointer" onClick={onClose} style={{ zIndex: 0 }} />
             <motion.div
               className="relative w-full max-w-md overflow-hidden rounded-[2rem] z-10"
               style={{ background: 'rgba(9, 2, 28, 0.95)', border: '1px solid rgba(0, 240, 255, 0.2)', boxShadow: '0 0 50px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05)' }}

@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
   branch:      { type: String, required: true, trim: true },
   collegeName: { type: String, required: true, trim: true },
   teamName:    { type: String, required: true, trim: true },
-  teamMembers: { type: String, required: true, trim: true },
+  teamMembers: { type: [String], default: [] },
   createdAt:   { type: Date, default: Date.now },
 });
 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BOT_NAME = 'ARIA';
-const BOT_SUBTITLE = 'AR/VR Hackathon Assistant';
+const BOT_SUBTITLE = 'Game-o-thon 2K26 Assistant';
 
 const QUICK_QUESTIONS = [
   '📍 Venue & Location',
@@ -24,11 +24,11 @@ const QA = {
   },
   'rules': {
     q: '📋 Rules',
-    a: `📜 **Hackathon Rules:**\n\n✅ Team size: 2–4 members\n✅ Students only\n✅ Working prototype required\n✅ AR/VR must be core component\n✅ Open source tools preferred\n🚫 No pre-built code allowed\n⏱️ 48-hour build time\n🎤 Presentation mandatory`,
+    a: `📜 **Game-o-thon Rules:**\n\n✅ Team size: 1–4 members\n✅ Students only\n✅ Game must be playable\n✅ Game must be original\n✅ Open source assets allowed\n⏱️ Final submission: 20 April\n🎤 Presentation: 22 April`,
   },
   'dates': {
     q: '📅 Important Dates',
-    a: `📅 **Key Dates:**\n\n🚀 **March 15, 2026** — Registration Opens\n⏰ **April 10, 2026** — Registration Closes\n⚡ **April 20–21, 2026** — Hackathon Day\n🏆 **May 5, 2026** — Results Announced`,
+    a: `📅 **Key Dates:**\n\n🚀 **Registration** — Open Now\n⏰ **20 April 2026** — Final Submission\n⚡ **22 April 2026** — Final Presentation\n🏆 **22 April 2026** — Results Announced`,
   },
   'prizes': {
     q: '🏆 Prizes',
@@ -68,7 +68,7 @@ function formatMessage(text) {
 export default function Chatbot() {
   const [open, setOpen]       = useState(false);
   const [messages, setMessages] = useState([
-    { from: 'bot', text: `👋 Hi! I'm **ARIA**, your AR/VR Hackathon assistant!\n\nAsk me anything about the hackathon or pick a quick question below! 🚀`, time: new Date() }
+    { from: 'bot', text: `👋 Hi! I'm **ARIA**, your Game-o-thon 2K26 assistant!\n\nAsk me anything about the event or pick a quick question below! 🚀`, time: new Date() }
   ]);
   const [input, setInput]     = useState('');
   const [typing, setTyping]   = useState(false);

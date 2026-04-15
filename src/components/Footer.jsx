@@ -54,8 +54,8 @@ export default function Footer() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <div className="text-2xl font-black gradient-text glow-text">AR/VR Hackathon</div>
-            <div className="text-gray-500 text-sm mt-1">Innovation Meets Immersion · 2026</div>
+            <div className="text-2xl font-black gradient-text glow-text">Game-o-thon 2K26</div>
+            <div className="text-gray-500 text-sm mt-1">Build The Game · Break The Limit</div>
           </motion.div>
 
           <motion.nav
@@ -108,7 +108,7 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          © 2026 AR/VR Hackathon. Made with{' '}
+          © 2026 Game-o-thon 2K26. Made with{' '}
           <motion.span
             className="text-red-400 inline-block"
             animate={{ scale: [1, 1.3, 1] }}

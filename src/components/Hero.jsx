@@ -133,7 +133,7 @@ export default function Hero({ onRegister }) {
 
             <motion.p className="text-gray-400 text-sm sm:text-base max-w-xl mb-8 leading-relaxed lg:mx-0 mx-auto"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.05, duration: 0.8 }}>
-              Dive into the future of immersive technologies. Build groundbreaking AR/VR solutions with peers, mentors, and industry experts.
+              Dive into the future of immersive technologies. Build groundbreaking games with peers, mentors, and industry experts.
             </motion.p>
 
             <motion.div

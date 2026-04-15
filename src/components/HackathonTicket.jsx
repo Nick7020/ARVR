@@ -9,7 +9,7 @@ export default function HackathonTicket({ form, onClose }) {
   const [downloaded, setDownloaded]   = useState(false);
 
   const ticketId = useMemo(() =>
-    `ARVR-2026-${Math.random().toString(36).substring(2,7).toUpperCase()}`, []);
+    `GOT-2K26-${Math.random().toString(36).substring(2,7).toUpperCase()}`, []);
   const members = Array.isArray(form.teamMembers)
     ? form.teamMembers.filter(Boolean)
     : (form.teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
@@ -93,7 +93,7 @@ export default function HackathonTicket({ form, onClose }) {
             }} />
             <div className="flex-1 min-w-0">
               <p style={{ color:'rgba(139,92,246,0.7)', fontSize:7, letterSpacing:'0.2em', textTransform:'uppercase', margin:0 }}>Zeal Education Society's</p>
-              <p style={{ color:'#fff', fontSize:9, fontWeight:800, margin:0 }}>ZIBACAR · AR/VR Hackathon 2026</p>
+              <p style={{ color:'#fff', fontSize:9, fontWeight:800, margin:0 }}>ZIBACAR · Game-o-thon 2K26</p>
               <p style={{ color:'rgba(255,255,255,0.7)', fontSize:8, fontWeight:700, margin:0 }}>Zeal Institute of Business Administration,</p>
               <p style={{ color:'rgba(255,255,255,0.7)', fontSize:8, fontWeight:700, margin:0 }}>Computer Application and Research</p>
             </div>
@@ -106,7 +106,7 @@ export default function HackathonTicket({ form, onClose }) {
           {/* EVENT TITLE */}
           <div className="mb-3 pb-3" style={{ borderBottom:'1px solid rgba(139,92,246,0.2)' }}>
             <h1 style={{ fontSize:22, fontWeight:900, margin:0, lineHeight:1, color:'#ffffff', textShadow:'0 0 20px rgba(255,255,255,0.4)' }}>
-              AR/VR HACKATHON
+              GAME-O-THON 2K26
             </h1>
             <p style={{ color:'#22d3ee', fontSize:9, margin:'3px 0 0', letterSpacing:'0.2em', textTransform:'uppercase' }}>
               Innovation Meets Immersion
@@ -162,7 +162,7 @@ export default function HackathonTicket({ form, onClose }) {
 
           {/* DATE ROW */}
           <div className="flex gap-3 flex-wrap">
-            {[['📅','Date','Apr 20–21, 2026'],['📍','Venue','ZIBACAR, Pune'],['⏱','Duration','48 Hours']].map(([icon,label,val]) => (
+            {[['📅','Date','Apr 20–21, 2026'],['📍','Venue','ZIBACAR, Pune'],['⏱','Duration','1 Day']].map(([icon,label,val]) => (
               <div key={label}>
                 <p style={{ color:'rgba(139,92,246,0.55)', fontSize:7, letterSpacing:'0.15em', margin:0 }}>{icon} {label}</p>
                 <p style={{ color:'#e2e8f0', fontSize:9, fontWeight:700, margin:0 }}>{val}</p>

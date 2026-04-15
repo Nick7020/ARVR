@@ -48,7 +48,7 @@ function HoloLogo() {
           className="text-base font-black tracking-wider"
           style={{ background: 'linear-gradient(135deg, #fff 0%, #a855f7 50%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
         >
-          AR/VR
+          Game-o-thon
         </motion.span>
         <span className="text-[10px] tracking-[0.35em] text-purple-400/70 uppercase font-medium">Game-o-thon 2K26</span>
       </div>

@@ -149,7 +149,7 @@ export default function RegisterModal({ onClose }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'dummy_key',
         amount: orderData.order.amount,
         currency: 'INR',
-        name: 'AR/VR Hackathon 2026',
+        name: 'Game-o-thon 2K26',
         description: 'Registration Fee',
         order_id: orderData.order.id,
         handler: async function (response) {

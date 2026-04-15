@@ -22,7 +22,7 @@ export default function VRModel() {
           >
             <div className="text-8xl mb-3" style={{ filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.9))' }}>🥽</div>
             <p className="text-purple-400/60 text-xs tracking-widest uppercase">AR / VR</p>
-            <p className="text-cyan-400/40 text-[10px] tracking-widest mt-1">Hackathon 2026</p>
+            <p className="text-cyan-400/40 text-[10px] tracking-widest mt-1">2K26</p>
           </motion.div>
           {/* Orbit rings CSS only */}
           {[80, 110, 140].map((size, i) => (

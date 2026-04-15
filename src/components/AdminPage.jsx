@@ -65,7 +65,7 @@ export default function AdminPage() {
         >
           <div className="h-1 w-full rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #a855f7, #3b82f6, #22d3ee)' }} />
           <h2 className="text-2xl font-black gradient-text mb-1">Admin Panel</h2>
-          <p className="text-gray-500 text-sm mb-6">AR/VR Hackathon 2026</p>
+          <p className="text-gray-500 text-sm mb-6">Game-o-thon 2K26</p>
           <input
             type="password"
             placeholder="Enter admin password"
@@ -101,7 +101,7 @@ export default function AdminPage() {
           initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
           <div>
             <h1 className="text-3xl font-black gradient-text">Admin Dashboard</h1>
-            <p className="text-gray-500 text-sm mt-1">AR/VR Hackathon 2026 · ZIBACAR</p>
+            <p className="text-gray-500 text-sm mt-1">Game-o-thon 2K26 · ZIBACAR</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="px-4 py-2 rounded-xl text-sm font-bold"

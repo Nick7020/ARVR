@@ -125,15 +125,15 @@ export default function Preloader({ onComplete }) {
             transition={{ delay: 0.7, duration: 0.8 }}
           />
 
-          {/* ── AR/VR HACKATHON letters ── */}
+          {/* ── Game-o-thon letters ── */}
           <div className="relative z-10 flex gap-1.5 mb-2">
-            {'AR/VR'.split('').map((l, i) => (
+            {'Game-o-thon'.split('').map((l, i) => (
               <motion.span
                 key={i}
-                className="text-4xl font-black gradient-text"
+                className="text-3xl font-black gradient-text"
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + i * 0.08, duration: 0.5 }}
+                transition={{ delay: 0.8 + i * 0.06, duration: 0.5 }}
               >
                 {l}
               </motion.span>
@@ -146,7 +146,7 @@ export default function Preloader({ onComplete }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
           >
-            Hackathon 2026
+            2K26
           </motion.p>
 
           {/* ── Progress bar ── */}

@@ -104,7 +104,6 @@ export default function RegisterModal({ onClose }) {
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
-  const [launched, setLaunched] = useState(false);
   const [showTicket, setShowTicket] = useState(false);
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
@@ -162,7 +161,7 @@ export default function RegisterModal({ onClose }) {
             });
             const data = await registerRes.json();
             if (data.success) {
-              setLaunched(true);
+              setShowTicket(true);
             } else {
               setStatus({ ok: false, msg: data.message });
             }
@@ -189,11 +188,10 @@ export default function RegisterModal({ onClose }) {
 
   return (
     <>
-      <AnimatePresence>{launched && <RocketLaunch onDone={() => { setLaunched(false); setShowTicket(true); }} />}</AnimatePresence>
-      <AnimatePresence>{showTicket && <HackathonTicket form={form} onClose={onClose} />}</AnimatePresence>
+      <AnimatePresence>{showTicket && <HackathonTicket form={{ ...form, teamMembers }} onClose={onClose} />}</AnimatePresence>
 
       <AnimatePresence>
-        {!launched && !showTicket && (
+        {!showTicket && (
           <motion.div className="fixed inset-0 z-[9990] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(12px)' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="absolute inset-0" onClick={onClose} />
             <motion.div

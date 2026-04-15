@@ -90,7 +90,7 @@ export default function About() {
             About the <span className="gradient-text">Hackathon</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            The AR/VR Hackathon is a <span className="text-purple-300 font-semibold">48-hour innovation challenge</span> where students collaborate to build immersive solutions using augmented and virtual reality technologies.
+            The <span className="text-purple-300 font-semibold">Game Designing Hackathon</span> is organized by Zeal College in collaboration with <span className="text-cyan-300 font-semibold">IIT Mandi iHub</span> and <span className="text-cyan-300 font-semibold">HCI Foundation</span>. Students develop original games and present them to expert judges.
           </p>
         </motion.div>
 

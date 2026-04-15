@@ -13,9 +13,9 @@ export default async function handler(req, res) {
   try {
     await connectDB();
 
-    const { name, email, phone, branch, collegeName, teamName, teamMembers } = req.body;
+    const { name, email, phone, branch, collegeName, teamName, teamMembers, teamSize } = req.body;
 
-    if (!name || !email || !phone || !branch || !collegeName || !teamName || !teamMembers) {
+    if (!name || !email || !phone || !branch || !collegeName || !teamName) {
       return res.status(400).json({ success: false, message: '⚠️ All fields are required.' });
     }
 
@@ -24,7 +24,11 @@ export default async function handler(req, res) {
       return res.status(409).json({ success: false, message: '⚠️ This email is already registered!' });
     }
 
-    await new Registration({ name, email, phone, branch, collegeName, teamName, teamMembers }).save();
+    const membersArray = Array.isArray(teamMembers)
+      ? teamMembers
+      : (teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
+
+    await new Registration({ name, email, phone, branch, collegeName, teamName, teamMembers: membersArray }).save();
 
     res.status(201).json({ success: true, message: 'Registration successful! See you at the hackathon 🚀' });
   } catch (err) {

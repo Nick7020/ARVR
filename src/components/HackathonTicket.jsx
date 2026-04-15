@@ -10,7 +10,9 @@ export default function HackathonTicket({ form, onClose }) {
 
   const ticketId = useMemo(() =>
     `ARVR-2026-${Math.random().toString(36).substring(2,7).toUpperCase()}`, []);
-  const members = form.teamMembers.split(',').map(m => m.trim()).filter(Boolean);
+  const members = Array.isArray(form.teamMembers)
+    ? form.teamMembers.filter(Boolean)
+    : (form.teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
 
   const downloadPDF = async () => {
     setDownloading(true);

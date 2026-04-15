@@ -8,6 +8,10 @@ import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
 import Chatbot from './components/Chatbot';
+// import GameOThonLanding from './components/GameOThonLanding';
+
+// Then render it in your App component
+
 
 // Lazy load heavy sections — NOT Hero (must render first)
 const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
@@ -36,7 +40,7 @@ export default function App() {
             <Suspense fallback={null}><ParticlesBackground /></Suspense>
             <div className="fixed inset-0 z-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,92,246,0.15) 0%, transparent 60%)' }} />
-
+{/* <GameOThonLanding />   */}
             <Navbar onRegister={() => setShowModal(true)} />
 
             <main className="relative z-10">

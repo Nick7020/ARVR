@@ -50,7 +50,7 @@ function HoloLogo() {
         >
           AR/VR
         </motion.span>
-        <span className="text-[10px] tracking-[0.35em] text-purple-400/70 uppercase font-medium">Hackathon 2026</span>
+        <span className="text-[10px] tracking-[0.35em] text-purple-400/70 uppercase font-medium">Game-o-thon 2K26</span>
       </div>
 
       {/* Scan line on hover */}

@@ -3,19 +3,19 @@ import { motion } from 'framer-motion';
 const prizes = [
   {
     rank: '1st', icon: '🥇', label: 'Grand Prize',
-    amount: '₹50,000', perks: ['Trophy + Certificate', 'Internship Opportunity', 'Mentorship Program', 'Featured on Website'],
+    amount: '₹21,000', perks: ['Trophy + Certificate', 'Internship Opportunity', 'Mentorship Program', 'Featured on Website'],
     gradient: 'from-yellow-500/30 via-amber-500/20 to-orange-500/10',
     border: 'rgba(234,179,8,0.5)', glow: 'rgba(234,179,8,0.3)', scale: 1.05,
   },
   {
     rank: '2nd', icon: '🥈', label: 'Runner Up',
-    amount: '₹30,000', perks: ['Trophy + Certificate', 'Swag Kit', 'Cloud Credits', 'LinkedIn Feature'],
+    amount: '₹11,000', perks: ['Trophy + Certificate', 'Swag Kit', 'Cloud Credits', 'LinkedIn Feature'],
     gradient: 'from-slate-400/30 via-gray-400/20 to-slate-500/10',
     border: 'rgba(148,163,184,0.5)', glow: 'rgba(148,163,184,0.3)', scale: 1,
   },
   {
     rank: '3rd', icon: '🥉', label: '2nd Runner Up',
-    amount: '₹20,000', perks: ['Certificate', 'Swag Kit', 'Cloud Credits', 'Recognition'],
+    amount: '₹7,000', perks: ['Certificate', 'Swag Kit', 'Cloud Credits', 'Recognition'],
     gradient: 'from-orange-600/30 via-amber-700/20 to-orange-800/10',
     border: 'rgba(194,120,60,0.5)', glow: 'rgba(194,120,60,0.3)', scale: 1,
   },
@@ -38,7 +38,7 @@ export default function Prizes() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mt-3">
             Win <span className="gradient-text">Prizes</span>
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">Over ₹1,00,000 in prizes and opportunities</p>
+          <p className="text-gray-400 mt-4 text-lg">Over ₹39,000 in prizes and opportunities</p>
         </motion.div>
 
         <div className="flex flex-col md:flex-row items-stretch justify-center gap-6">

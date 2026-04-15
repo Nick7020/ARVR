@@ -16,7 +16,7 @@ export default function Hero({ onRegister }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const y       = useTransform(scrollYProgress, [0, 1], ['0%', '35%']);
   const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const titleWords = ['AR/VR', 'Hackathon', '2026'];
+  const titleWords = ['Game-o-thon', '2K26'];
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden pt-24">
@@ -113,8 +113,7 @@ export default function Hero({ onRegister }) {
                     transition={{ duration: 0.9, delay: 0.2 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {i === 0 && <span className="text-white tracking-tight">{word}</span>}
-                    {i === 1 && <span className="gradient-text">{word}</span>}
-                    {i === 2 && <span className="gradient-text glow-text">{word}</span>}
+                    {i === 1 && <span className="gradient-text glow-text">{word}</span>}
                   </motion.span>
                 </motion.div>
               ))}
@@ -122,7 +121,7 @@ export default function Hero({ onRegister }) {
 
             <motion.p className="text-base sm:text-xl md:text-2xl text-cyan-300 font-light tracking-[0.15em] uppercase mb-4 glow-cyan"
               initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.85, duration: 0.8 }}>
-              Innovation Meets Immersion
+              Build The Game · Break The Limit
             </motion.p>
 
             <motion.p className="text-gray-400 text-sm sm:text-base max-w-xl mb-8 leading-relaxed lg:mx-0 mx-auto"

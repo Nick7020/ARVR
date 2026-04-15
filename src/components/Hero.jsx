@@ -62,14 +62,21 @@ export default function Hero({ onRegister }) {
                 ✦ Zeal Education Society's ✦
               </motion.p>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.8 }}>
-                <h2 className="font-black text-sm sm:text-2xl md:text-3xl lg:text-4xl leading-tight"
-                  style={{ background: 'linear-gradient(135deg, #ffffff 0%, #c084fc 40%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 12px rgba(139,92,246,0.8))' }}>
-                  Zeal Institute of Business Administration,
-                </h2>
-                <h2 className="font-black text-sm sm:text-2xl md:text-3xl lg:text-4xl leading-tight"
-                  style={{ background: 'linear-gradient(135deg, #c084fc 0%, #60a5fa 50%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 12px rgba(34,211,238,0.6))' }}>
-                  Computer Application and Research
-                </h2>
+                <div className="overflow-hidden w-full relative">
+                  <motion.h2
+                    className="font-black whitespace-nowrap inline-block"
+                    style={{
+                      fontSize: 'clamp(13px, 2.2vw, 30px)',
+                      background: 'linear-gradient(135deg, #ffffff 0%, #c084fc 40%, #22d3ee 100%)',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                      filter: 'drop-shadow(0 0 12px rgba(139,92,246,0.8))',
+                    }}
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+                  >
+                    Zeal Institute of Business Administration, Computer Application and Research &nbsp;&nbsp;&nbsp;&nbsp; Zeal Institute of Business Administration, Computer Application and Research &nbsp;&nbsp;&nbsp;&nbsp;
+                  </motion.h2>
+                </div>
               </motion.div>
               <motion.div className="mt-2 flex items-center gap-3 justify-center sm:justify-start flex-wrap"
                 initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6, type: 'spring' }}>

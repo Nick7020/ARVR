@@ -98,22 +98,7 @@ export default function About() {
           {cards.map((card, i) => <TiltCard key={card.title} card={card} index={i} />)}
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-          {[['48', 'Hours'], ['200+', 'Participants'], ['₹1L+', 'Prize Pool'], ['20+', 'Mentors']].map(([num, label], i) => (
-            <motion.div
-              key={label}
-              className="text-center glass rounded-xl py-6 neon-border"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5, type: 'spring' }}
-            >
-              <div className="text-3xl font-black gradient-text">{num}</div>
-              <div className="text-gray-400 text-sm mt-1">{label}</div>
-            </motion.div>
-          ))}
-        </div>
+
       </div>
     </section>
   );

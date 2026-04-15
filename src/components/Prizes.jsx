@@ -88,7 +88,7 @@ export default function Prizes() {
 
         {/* Special prizes */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-12">
-          {[['🎯', 'Best UI/UX', '₹5,000'], ['🔬', 'Most Innovative', '₹5,000'], ['🌟', 'Best Pitch', '₹5,000']].map(([icon, title, amt]) => (
+          {[['🎯', 'Best UI/UX'], ['🔬', 'Most Innovative'], ['🌟', 'Best Pitch']].map(([icon, title]) => (
             <motion.div
               key={title}
               className="glass rounded-xl p-5 text-center neon-border"
@@ -99,7 +99,6 @@ export default function Prizes() {
             >
               <div className="text-3xl mb-2">{icon}</div>
               <div className="text-white font-semibold text-sm">{title}</div>
-              <div className="gradient-text font-bold mt-1">{amt}</div>
             </motion.div>
           ))}
         </div>

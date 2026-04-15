@@ -1,12 +1,7 @@
 import { motion } from 'framer-motion';
 
 const tracks = [
-  { icon: '🎮', title: 'AR/VR Gaming', desc: 'Create immersive gaming experiences that push the boundaries of interactive entertainment.', color: '#a855f7', tag: 'Most Popular' },
-  { icon: '🏥', title: 'Healthcare & Wellness', desc: 'Revolutionize patient care, medical training, and mental health through immersive simulations.', color: '#3b82f6', tag: '' },
-  { icon: '🎓', title: 'Education & Training', desc: 'Transform learning with virtual classrooms, interactive simulations, and spatial education tools.', color: '#22d3ee', tag: '' },
-  { icon: '🏙️', title: 'Smart Cities', desc: 'Visualize urban planning, infrastructure, and city management through AR/VR overlays.', color: '#ec4899', tag: '' },
-  { icon: '🛒', title: 'Retail & Commerce', desc: 'Build virtual try-on, immersive shopping, and AR product visualization experiences.', color: '#f59e0b', tag: '' },
-  { icon: '🌍', title: 'Social Impact', desc: 'Use immersive tech to address climate change, accessibility, and humanitarian challenges.', color: '#10b981', tag: '' },
+  { icon: '🎮', title: 'Game Development', desc: 'Create immersive gaming experiences that push the boundaries of interactive entertainment using any platform or technology.', color: '#a855f7', tag: 'Open Theme' },
 ];
 
 export default function Tracks() {
@@ -23,61 +18,73 @@ export default function Tracks() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-cyan-400 text-sm tracking-[0.3em] uppercase font-medium">Challenge Areas</span>
+          <span className="text-cyan-400 text-sm tracking-[0.3em] uppercase font-medium">Challenge Area</span>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mt-3">
-            Hack <span className="gradient-text">Tracks</span>
+            Hack <span className="gradient-text">Track</span>
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tracks.map((track, i) => (
+        <motion.div
+          className="relative glass rounded-2xl p-8 group overflow-hidden cursor-pointer w-full"
+          style={{ border: `1px solid #a855f720` }}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          whileHover={{ scale: 1.01, y: -4 }}
+        >
+          {/* Glow bg */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+            style={{ background: 'radial-gradient(circle at 30% 50%, #a855f715 0%, transparent 60%)' }} />
+
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+            {/* Icon */}
             <motion.div
-              key={track.title}
-              className="relative glass rounded-2xl p-7 group overflow-hidden cursor-pointer"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ scale: 1.03, y: -5 }}
-            >
-              {/* Glow bg on hover */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
-                style={{ background: `radial-gradient(circle at 50% 0%, ${track.color}20 0%, transparent 70%)` }}
-              />
-              <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-opacity-50 transition-all duration-500"
-                style={{ borderColor: track.color + '40' }} />
+              className="text-8xl flex-shrink-0"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              whileHover={{ scale: 1.2, rotate: 15 }}
+            >🎮</motion.div>
 
-              {track.tag && (
-                <span className="absolute top-4 right-4 text-xs px-3 py-1 rounded-full font-medium"
-                  style={{ background: track.color + '20', color: track.color, border: `1px solid ${track.color}40` }}>
-                  {track.tag}
-                </span>
-              )}
-
-              <motion.div
-                className="text-4xl mb-4"
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, delay: i * 0.3 }}
-                whileHover={{ scale: 1.3, rotate: 15 }}
-              >
-                {track.icon}
-              </motion.div>
-
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text transition-all duration-300"
-                style={{ backgroundImage: `linear-gradient(135deg, ${track.color}, #fff)`, WebkitBackgroundClip: 'text' }}>
-                {track.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{track.desc}</p>
-
-              <div className="mt-5 flex items-center gap-2 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ color: track.color }}>
-                <span>Explore Track</span>
-                <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>→</motion.span>
+            {/* Content */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex items-center gap-3 justify-center md:justify-start mb-3">
+                <h3 className="text-2xl sm:text-3xl font-black" style={{ color: '#a855f7' }}>Game Development</h3>
+                <span className="text-xs px-3 py-1 rounded-full font-bold"
+                  style={{ background: '#a855f720', color: '#a855f7', border: '1px solid #a855f740' }}>Open Theme</span>
               </div>
-            </motion.div>
-          ))}
-        </div>
+              <p className="text-gray-400 text-base leading-relaxed mb-6 max-w-2xl">
+                Create immersive gaming experiences that push the boundaries of interactive entertainment using any platform or technology of your choice.
+              </p>
+
+              {/* Tech pills */}
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                {['Unity','Unreal Engine','Godot','Python','Java','C++','HTML5 / JS','Mobile App','No-Code'].map(tech => (
+                  <span key={tech} className="text-xs px-3 py-1 rounded-full font-medium"
+                    style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.2)', color: '#c084fc' }}>
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="flex md:flex-col gap-6 md:gap-4 flex-shrink-0">
+              {[['1-4','Team Size'],['Open','Theme'],['22 Apr','Final Day']].map(([val, label]) => (
+                <div key={label} className="text-center">
+                  <div className="text-xl font-black" style={{ color: '#22d3ee' }}>{val}</div>
+                  <div className="text-gray-500 text-xs tracking-widest uppercase mt-0.5">{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div className="mt-5 flex items-center gap-2 text-xs font-medium justify-center md:justify-start opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{ color: '#a855f7' }}>
+            <span>Explore Track</span>
+            <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1, repeat: Infinity }}>→</motion.span>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

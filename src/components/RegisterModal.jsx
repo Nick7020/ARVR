@@ -140,7 +140,7 @@ export default function RegisterModal({ onClose }) {
       const orderData = await orderRes.json();
 
       if (!orderData.success) {
-        setStatus({ ok: false, msg: orderData.message || 'Payment link failed.' });
+        setStatus({ ok: false, msg: orderData.message || 'Payment initialization failed. Please try again.' });
         setLoading(false);
         return;
       }
@@ -166,7 +166,7 @@ export default function RegisterModal({ onClose }) {
               setStatus({ ok: false, msg: data.message });
             }
           } catch(err) {
-            setStatus({ ok: false, msg: 'Network failure upon verification.' });
+            setStatus({ ok: false, msg: 'Registration failed after payment. Contact support.' });
           }
           setLoading(false);
         },
@@ -175,13 +175,20 @@ export default function RegisterModal({ onClose }) {
       };
 
       const paymentObject = new window.Razorpay(options);
-      paymentObject.on('payment.failed', function () {
-        setStatus({ ok: false, msg: 'Payment failed. Use GPay or PhonePe.' });
+      paymentObject.on('payment.failed', function (response) {
+        setStatus({ ok: false, msg: `Payment failed: ${response.error.description || 'Please try again.'}` });
+        setLoading(false);
+      });
+      paymentObject.on('modal.ondismiss', function () {
+        // Payment cancelled - reset to step 1
+        setStep(1);
+        setStatus(null);
         setLoading(false);
       });
       paymentObject.open();
     } catch (err) {
-      setStatus({ ok: false, msg: 'Server unreachable.' });
+      console.error('Submit error:', err);
+      setStatus({ ok: false, msg: 'Server unreachable. Please check your connection and try again.' });
       setLoading(false);
     }
   };
@@ -271,7 +278,7 @@ export default function RegisterModal({ onClose }) {
                         </div>
                         
                         <div className="text-[10px] text-center text-amber-500/80 uppercase font-bold tracking-wider mt-2 border border-amber-500/20 bg-amber-950/20 rounded-lg p-2">
-                          Use GPay or PhonePe via Razorpay.<br/>FamPay is not authorized.
+                          Use Credit/Debit Card or Net Banking.<br/>For UPI use: <span className="text-cyan-400">success@razorpay</span> (test mode)
                         </div>
                       </div>
                     )}

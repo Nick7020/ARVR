@@ -109,7 +109,7 @@ export default function HackathonTicket({ form, onClose }) {
               GAME-O-THON 2K26
             </h1>
             <p style={{ color:'#22d3ee', fontSize:9, margin:'3px 0 0', letterSpacing:'0.2em', textTransform:'uppercase' }}>
-              Innovation Meets Immersion
+              Build The Game · Break The Limit
             </p>
           </div>
 

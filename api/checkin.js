@@ -29,8 +29,8 @@ export default async function handler(req, res) {
     if (reg.checkedIn) return res.status(400).json({
       success: false,
       alreadyCheckedIn: true,
-      message: `⚠️ Already checked in at ${new Date(reg.checkedInAt).toLocaleTimeString()} by ${reg.checkedInBy}`,
-      data: { name: reg.name, team: reg.teamName, uniqueId: reg.uniqueId },
+      message: `⚠️ Already checked in at ${new Date(reg.checkedInAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })} IST by ${reg.checkedInBy}`,
+      data: { name: reg.name, team: reg.teamName, uniqueId: reg.uniqueId, checkedInAt: reg.checkedInAt, checkedInBy: reg.checkedInBy },
     });
 
     reg.checkedIn   = true;
@@ -38,18 +38,23 @@ export default async function handler(req, res) {
     reg.checkedInBy = staffUsername || 'Staff';
     await reg.save();
 
+    const istTime = new Date(reg.checkedInAt).toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
+    });
+
     res.json({
       success: true,
-      message: '✅ Check-in successful!',
+      message: `✅ Check-in successful! Time: ${istTime} IST`,
       data: {
-        name:       reg.name,
-        email:      reg.email,
-        phone:      reg.phone,
-        branch:     reg.branch,
-        college:    reg.collegeName,
-        team:       reg.teamName,
-        members:    reg.teamMembers,
-        uniqueId:   reg.uniqueId,
+        name:        reg.name,
+        email:       reg.email,
+        phone:       reg.phone,
+        branch:      reg.branch,
+        college:     reg.collegeName,
+        team:        reg.teamName,
+        members:     reg.teamMembers,
+        uniqueId:    reg.uniqueId,
         checkedInAt: reg.checkedInAt,
         checkedInBy: reg.checkedInBy,
       },

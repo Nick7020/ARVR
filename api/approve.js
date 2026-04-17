@@ -59,57 +59,116 @@ export default async function handler(req, res) {
         to: reg.email,
         subject: '🎮 Registration Approved — Game-o-thon 2K26 | Your Entry Pass',
         html: `
-          <div style="font-family:Arial,sans-serif;background:#020010;color:#e2e8f0;padding:40px;max-width:600px;margin:0 auto;border-radius:16px;border:1px solid rgba(139,92,246,0.3)">
-            <div style="text-align:center;margin-bottom:24px">
-              <h1 style="color:#a855f7;font-size:28px;margin:0">Game-o-thon 2K26</h1>
-              <p style="color:#22d3ee;letter-spacing:0.2em;text-transform:uppercase;font-size:11px;margin:4px 0">Build The Game · Break The Limit</p>
-            </div>
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#020010;font-family:Arial,sans-serif">
+<div style="max-width:600px;margin:0 auto;padding:20px">
 
-            <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:20px;margin-bottom:20px">
-              <h2 style="color:#a855f7;margin:0 0 6px">✅ Registration Approved!</h2>
-              <p style="color:#e2e8f0;margin:0">Hi <strong>${reg.name}</strong>, you're officially registered for Game-o-thon 2K26!</p>
-            </div>
+  <!-- Header -->
+  <div style="text-align:center;padding:30px 0 20px">
+    <h1 style="color:#a855f7;font-size:32px;margin:0;letter-spacing:2px">GAME-O-THON</h1>
+    <p style="color:#22d3ee;font-size:13px;letter-spacing:4px;text-transform:uppercase;margin:4px 0">2K26</p>
+    <p style="color:#6b7280;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin:4px 0">Build The Game · Break The Limit</p>
+  </div>
 
-            <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
-              ${[
-                ['Participant', reg.name],
-                ['Email', reg.email],
-                ['Phone', reg.phone],
-                ['Branch', reg.branch],
-                ['College', reg.collegeName],
-                ['Team Name', reg.teamName],
-                ['Team Members', reg.teamMembers.length ? reg.teamMembers.join(', ') : reg.name],
-              ].map(([l, v]) => `
-                <tr>
-                  <td style="padding:7px 10px;color:rgba(139,92,246,0.7);font-size:11px;text-transform:uppercase;width:35%;border-bottom:1px solid rgba(255,255,255,0.05)">${l}</td>
-                  <td style="padding:7px 10px;color:#e2e8f0;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.05)">${v}</td>
-                </tr>
-              `).join('')}
-            </table>
+  <!-- Approved Banner -->
+  <div style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(34,211,238,0.1));border:1px solid rgba(139,92,246,0.4);border-radius:16px;padding:20px;text-align:center;margin-bottom:20px">
+    <div style="font-size:40px;margin-bottom:8px">✅</div>
+    <h2 style="color:#a855f7;margin:0 0 6px;font-size:22px">Registration Approved!</h2>
+    <p style="color:#e2e8f0;margin:0;font-size:14px">Hi <strong>${reg.name}</strong>, you're officially in!</p>
+  </div>
 
-            <div style="background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center">
-              <p style="color:rgba(34,211,238,0.6);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;margin:0 0 6px">Event Details</p>
-              <p style="color:#e2e8f0;margin:3px 0">📅 <strong>22 April 2026</strong> — Final Presentation</p>
-              <p style="color:#e2e8f0;margin:3px 0">📍 <strong>Zeal College, Pune</strong></p>
-              <p style="color:#e2e8f0;margin:3px 0">⏰ <strong>Reporting Time: 9:00 AM</strong></p>
-            </div>
+  <!-- Entry Pass Card -->
+  <div style="background:linear-gradient(135deg,#0a0020,#0d0030);border:2px solid rgba(139,92,246,0.5);border-radius:20px;overflow:hidden;margin-bottom:20px">
+    
+    <!-- Pass Header -->
+    <div style="background:linear-gradient(90deg,#a855f7,#3b82f6,#22d3ee);height:5px"></div>
+    <div style="padding:20px 24px;border-bottom:1px solid rgba(139,92,246,0.2)">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="color:rgba(139,92,246,0.6);font-size:9px;letter-spacing:3px;text-transform:uppercase;margin:0">OFFICIAL ENTRY PASS</p>
+          <h2 style="color:#ffffff;font-size:20px;margin:4px 0 0;font-weight:900">GAME-O-THON 2K26</h2>
+        </div>
+        <div style="text-align:right">
+          <p style="color:rgba(34,211,238,0.5);font-size:9px;letter-spacing:2px;margin:0">TICKET ID</p>
+          <p style="color:#22d3ee;font-size:13px;font-weight:900;margin:2px 0 0;letter-spacing:1px">GOT-2K26-${reg._id.toString().slice(-5).toUpperCase()}</p>
+        </div>
+      </div>
+    </div>
 
-            <!-- Unique ID + QR -->
-            <div style="text-align:center;padding:20px;background:rgba(139,92,246,0.05);border-radius:12px;margin-bottom:20px;border:1px solid rgba(139,92,246,0.2)">
-              <p style="color:#a855f7;font-size:11px;margin:0 0 6px;text-transform:uppercase;letter-spacing:0.2em">Your Unique Entry ID</p>
-              <p style="color:#22d3ee;font-size:26px;font-weight:900;margin:0 0 16px;letter-spacing:0.15em">${uniqueId}</p>
-              <p style="color:#e2e8f0;font-size:12px;margin:0 0 12px">Scan this QR code at the venue for check-in</p>
-              <img src="cid:qrcode" alt="Entry QR Code" style="width:200px;height:200px;border-radius:12px;border:3px solid rgba(139,92,246,0.5)" />
-              <p style="color:rgba(139,92,246,0.5);font-size:10px;margin:10px 0 0">⚠️ Do not share this QR code with others</p>
-            </div>
+    <!-- Pass Body -->
+    <div style="padding:20px 24px;display:flex;gap:20px">
+      
+      <!-- Left: Details -->
+      <div style="flex:1">
+        <div style="margin-bottom:14px">
+          <p style="color:rgba(139,92,246,0.5);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin:0 0 3px">PARTICIPANT</p>
+          <p style="color:#ffffff;font-size:20px;font-weight:900;margin:0">${reg.name}</p>
+        </div>
+        
+        <table style="width:100%;border-collapse:collapse">
+          ${[
+            ['EMAIL', reg.email],
+            ['PHONE', reg.phone],
+            ['BRANCH', reg.branch],
+            ['COLLEGE', reg.collegeName],
+            ['TEAM', reg.teamName],
+            ['MEMBERS', reg.teamMembers.length ? reg.teamMembers.join(', ') : reg.name],
+          ].map(([l,v]) => `
+          <tr>
+            <td style="padding:4px 0;color:rgba(139,92,246,0.5);font-size:9px;letter-spacing:1px;text-transform:uppercase;width:30%;vertical-align:top">${l}</td>
+            <td style="padding:4px 0;color:#e2e8f0;font-size:11px;font-weight:600">${v}</td>
+          </tr>`).join('')}
+        </table>
 
-            <p style="color:rgba(139,92,246,0.5);font-size:11px;text-align:center;margin:0">
-              © 2026 Game-o-thon 2K26 · ZIBACAR · In Collaboration with IIT Mandi
-            </p>
-          </div>
+        <div style="margin-top:14px;padding:10px;background:rgba(34,211,238,0.08);border-radius:8px;border:1px solid rgba(34,211,238,0.2)">
+          <p style="color:rgba(34,211,238,0.6);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin:0 0 4px">EVENT INFO</p>
+          <p style="color:#e2e8f0;font-size:11px;margin:2px 0">📅 <strong>22 April 2026</strong></p>
+          <p style="color:#e2e8f0;font-size:11px;margin:2px 0">📍 <strong>Zeal College, Pune</strong></p>
+          <p style="color:#e2e8f0;font-size:11px;margin:2px 0">⏰ <strong>9:00 AM onwards</strong></p>
+        </div>
+      </div>
+
+      <!-- Right: QR Code -->
+      <div style="text-align:center;flex-shrink:0">
+        <p style="color:rgba(139,92,246,0.5);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px">SCAN FOR ENTRY</p>
+        <img src="cid:qrcode" alt="Entry QR" style="width:150px;height:150px;border-radius:10px;border:2px solid rgba(139,92,246,0.5);display:block" />
+        <p style="color:#22d3ee;font-size:11px;font-weight:900;margin:8px 0 2px;letter-spacing:1px">${uniqueId}</p>
+        <p style="color:rgba(139,92,246,0.4);font-size:9px;margin:0">⚠️ Do not share</p>
+      </div>
+    </div>
+
+    <!-- Pass Footer -->
+    <div style="background:rgba(139,92,246,0.08);padding:12px 24px;border-top:1px solid rgba(139,92,246,0.2);text-align:center">
+      <p style="color:#6b7280;font-size:10px;margin:0">In Collaboration with <strong style="color:#a855f7">IIT Mandi iHub</strong> · Sponsored by <strong style="color:#22d3ee">Vinsys IT Services</strong></p>
+    </div>
+    <div style="background:linear-gradient(90deg,#22d3ee,#3b82f6,#a855f7);height:3px"></div>
+  </div>
+
+  <!-- Instructions -->
+  <div style="background:rgba(234,179,8,0.08);border:1px solid rgba(234,179,8,0.2);border-radius:12px;padding:16px;margin-bottom:20px">
+    <h3 style="color:#fbbf24;margin:0 0 10px;font-size:14px">📌 Important Instructions</h3>
+    <ul style="color:#e2e8f0;font-size:12px;margin:0;padding-left:16px;line-height:1.8">
+      <li>Bring this email or QR code to the venue</li>
+      <li>Report by <strong>9:00 AM</strong> on 22 April 2026</li>
+      <li>Carry your college ID card</li>
+      <li>Bring your laptop with your game project</li>
+      <li>Do not share your QR code with others</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <p style="color:rgba(139,92,246,0.4);font-size:10px;text-align:center;margin:0">
+    © 2026 Game-o-thon 2K26 · ZIBACAR · Zeal Education Society's
+  </p>
+
+</div>
+</body>
+</html>
         `,
         attachments: [{
-          filename: `GameOThon_${uniqueId}_QR.png`,
+          filename: `GameOThon_${uniqueId}_EntryPass.png`,
           content: qrBase64Data,
           encoding: 'base64',
           cid: 'qrcode',

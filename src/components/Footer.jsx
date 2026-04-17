@@ -101,6 +101,33 @@ export default function Footer() {
         {/* Divider */}
         <div className="h-px mb-8" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)' }} />
 
+        {/* PPT Download */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 p-6 rounded-2xl"
+          style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)' }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center sm:text-left">
+            <p className="text-white font-bold text-base">📊 Official Presentation</p>
+            <p className="text-gray-400 text-sm mt-0.5">Game-o-thon 2K26 · Event Structure & Guidelines PPT</p>
+          </div>
+          <motion.a
+            href="/presentation.pptx"
+            download
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white text-sm flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #2563eb, #1d4ed8)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(59,130,246,0.5)' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Download PPT
+          </motion.a>
+        </motion.div>
+
         {/* Rulebook CTA */}
         <motion.div
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 p-6 rounded-2xl"

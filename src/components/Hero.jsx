@@ -162,15 +162,7 @@ export default function Hero({ onRegister }) {
               </motion.button>
             </motion.div>
 
-            <motion.div className="flex gap-6 mt-10 lg:justify-start justify-center"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}>
-              {[['48h', 'Hackathon'], ['₹1L+', 'Prizes'], ['200+', 'Hackers']].map(([val, label]) => (
-                <div key={label} className="text-center">
-                  <div className="text-xl sm:text-2xl font-black gradient-text">{val}</div>
-                  <div className="text-gray-500 text-[10px] tracking-widest uppercase mt-0.5">{label}</div>
-                </div>
-              ))}
-            </motion.div>
+
           </div>
 
           {/* RIGHT: 3D Model */}

@@ -6,7 +6,7 @@ import HackathonTicket from './HackathonTicket';
 const API = import.meta.env.VITE_API_URL || 'https://arvrhackthon.vercel.app';
 
 // ── UPI QR details ──
-const UPI_ID   = 'your-upi-id@upi'; // Replace with your UPI ID
+const UPI_ID   = 'vishwasvkenchi-1@okaxis'; // Replace with your UPI ID
 const UPI_NAME = 'Game-o-thon 2K26';
 
 const step1Fields = [

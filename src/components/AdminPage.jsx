@@ -43,13 +43,32 @@ export default function AdminPage() {
   const handleApprove = async (id) => {
     setActionLoading(id + '_approve');
     try {
+      // Step animations
+      const steps = [
+        { key: id + '_verify',  label: '🔍 Verifying...' },
+        { key: id + '_saving',  label: '💾 Saving...' },
+        { key: id + '_qr',     label: '🎟️ Generating QR...' },
+        { key: id + '_email',  label: '📧 Sending Email...' },
+      ];
+
+      for (const s of steps) {
+        setActionLoading(s.key);
+        await new Promise(r => setTimeout(r, 600));
+      }
+
       const res  = await fetch(`${API}/api/approve`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, action: 'approve' }),
       });
       const json = await res.json();
-      if (json.success) { alert('✅ Approved! QR + Email sent.'); fetchData(tab); setSsModal(null); }
-      else alert('Error: ' + json.message);
+      if (json.success) {
+        setActionLoading(id + '_done');
+        await new Promise(r => setTimeout(r, 1000));
+        fetchData(tab);
+        setSsModal(null);
+      } else {
+        alert('Error: ' + json.message);
+      }
     } catch { alert('Server error.'); }
     finally { setActionLoading(''); }
   };
@@ -368,4 +387,5 @@ export default function AdminPage() {
     </div>
   );
 }
+
 

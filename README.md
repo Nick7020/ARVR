@@ -222,10 +222,10 @@ Staff:    https://your-app.vercel.app/staff
 
 | Role | URL | Username | Password |
 |---|---|---|---|
-| Admin | `/admin` | — | `zibacar2026` |
-| Staff 1 | `/staff` | `staff1` | `checkin@1` |
-| Staff 2 | `/staff` | `staff2` | `checkin@2` |
-| Staff 3 | `/staff` | `staff3` | `checkin@3` |
+| Admin | `/admin` | — | `password` |
+| Staff 1 | `/staff` | `1staff` | `123` |
+| Staff 2 | `/staff` | `2staff` | `456` |
+| Staff 3 | `/staff` | `3staff` | `789` |
 
 ---
 

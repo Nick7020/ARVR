@@ -101,6 +101,34 @@ export default function Footer() {
         {/* Divider */}
         <div className="h-px mb-8" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)' }} />
 
+        {/* Rulebook CTA */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 p-6 rounded-2xl"
+          style={{ background: 'rgba(139,92,246,0.06)', border: '1px solid rgba(139,92,246,0.2)' }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center sm:text-left">
+            <p className="text-white font-bold text-base">📄 Official Rule Book</p>
+            <p className="text-gray-400 text-sm mt-0.5">Game Design Hackathon 2026 · IIT Mandi Collaboration</p>
+          </div>
+          <motion.a
+            href="/rulebook.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white text-sm flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #7c3aed, #2563eb)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 25px rgba(139,92,246,0.5)' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth="2">
+              <path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            View Official Rulebook
+          </motion.a>
+        </motion.div>
+
         {/* Bottom */}
         <motion.div
           className="text-center text-gray-500 text-sm"

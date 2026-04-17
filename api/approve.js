@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
       // Send approval email with ticket
       await resend.emails.send({
-        from: 'Game-o-thon 2K26 <noreply@arvrhackthon.vercel.app>',
+        from: 'Game-o-thon 2K26 <onboarding@resend.dev>',
         to: reg.email,
         subject: '🎮 You\'re In! Game-o-thon 2K26 Registration Approved',
         html: `
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
 
       // Send rejection email
       await resend.emails.send({
-        from: 'Game-o-thon 2K26 <noreply@arvrhackthon.vercel.app>',
+        from: 'Game-o-thon 2K26 <onboarding@resend.dev>',
         to: reg.email,
         subject: '❌ Game-o-thon 2K26 Registration Update',
         html: `

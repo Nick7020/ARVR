@@ -167,7 +167,7 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr style={{ background:'rgba(139,92,246,0.15)', borderBottom:'1px solid rgba(139,92,246,0.2)' }}>
-                    {['#','Name','Email','Phone','Team','Status','Payment SS','Actions'].map(h => (
+                    {['#','Name','Email','Phone','Team','Status','Check-in','Payment SS','Actions'].map(h => (
                       <th key={h} className="px-4 py-3 text-left text-xs font-bold text-purple-300 tracking-widest uppercase whitespace-nowrap">{h}</th>
                     ))}
                   </tr>

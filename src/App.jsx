@@ -8,12 +8,12 @@ import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
 import Chatbot from './components/Chatbot';
-// import GameOThonLanding from './components/GameOThonLanding';
+import StaffPanel from './components/StaffPanel';
 
-// Then render it in your App component
+const isAdmin = window.location.pathname === '/admin';
+const isStaff = window.location.pathname === '/staff';
 
-
-// Lazy load heavy sections — NOT Hero (must render first)
+// Lazy load heavy sections
 const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
 const About    = lazy(() => import('./components/About'));
 const Tracks   = lazy(() => import('./components/Tracks'));
@@ -21,13 +21,12 @@ const Timeline = lazy(() => import('./components/Timeline'));
 const Prizes   = lazy(() => import('./components/Prizes'));
 const Rules    = lazy(() => import('./components/Rules'));
 
-const isAdmin = window.location.pathname === '/admin';
-
 export default function App() {
   const [loaded, setLoaded]       = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   if (isAdmin) return <AdminPage />;
+  if (isStaff) return <StaffPanel />;
 
   return (
     <>

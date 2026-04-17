@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, Float, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 
+// Set Draco decoder path for compressed GLB
+useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 useGLTF.preload('/model.glb');
 
 function Model() {

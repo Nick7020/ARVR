@@ -16,27 +16,27 @@ const QUICK_QUESTIONS = [
 const QA = {
   'venue': {
     q: '📍 Venue & Location',
-    a: `🏫 **Venue:** ZIBACAR Campus\n📍 **Address:** Zeal Institute of Business Administration, Computer Application and Research, Pune\n🗺️ Google Maps link will be shared soon!\n⏰ **Reporting Time:** April 20, 2026 at 9:00 AM`,
+    a: `🏫 **Venue:**  F Buliding ZIBACAR Campus\n📍 **Address:** Zeal Institute of Business Administration, Computer Application and Research, Pune\n🗺️ Zeal Education Society Zeal Institute Of Business Administration Computer Application Research Narhe Gaon\n⏰ **Reporting Time:** April 23, 2026 at 9:00 AM`,
   },
   'coordinator': {
     q: '👤 Student Coordinators',
-    a: `👨‍💻 **Student Coordinators:**\n\n🔹 **Coordinator 1**\n   Name: Coming Soon\n   📱 Contact: Coming Soon\n\n🔹 **Coordinator 2**\n   Name: Coming Soon\n   📱 Contact: Coming Soon\n\n_(Details will be updated soon!)_`,
+    a: `👨‍💻 **Student Coordinators:**\n\n🔹 **Coordinator 1**\n   Name: Coming Soon\n   📱 Contact: Coming Soon\n\n🔹 **Coordinator 2**\n   Mustafa Pinjari: 8799849225Coming Soon\n   📱 Contact: Coming Soon\n\n_(Details will be updated soon!)_`,
   },
   'rules': {
     q: '📋 Rules',
-    a: `📜 **Game-o-thon Rules:**\n\n✅ Team size: 1–4 members\n✅ Students only\n✅ Game must be playable\n✅ Game must be original\n✅ Open source assets allowed\n⏱️ Final submission: 20 April\n🎤 Presentation: 23 April`,
+    a: `📜 **Game-o-thon Rules:**\n\n✅ Team size: 1–4 members\n✅ Students only\n✅ Game must be playable\n✅ Game must be original\n✅ Open source assets allowed\n⏱️ Final submission: 21 April\n🎤 Presentation: 23 April`,
   },
   'dates': {
     q: '📅 Important Dates',
-    a: `📅 **Key Dates:**\n\n🚀 **Registration** — Open Now\n⏰ **20 April 2026** — Final Submission\n⚡ **23 April 2026** — Final Presentation\n🏆 **23 April 2026** — Results Announced`,
+      a: `📅 **Key Dates:**\n\n🚀 **Registration** — Open Now\n⏰ **21 April 2026** — Final Submission\n⚡ **23 April 2026** — Final Presentation\n🏆 **23 April 2026** — Results Announced`,
   },
   'prizes': {
     q: '🏆 Prizes',
-    a: `🏆 **Prize Pool: ₹1,00,000+**\n\n🥇 **1st Place** — ₹50,000\n🥈 **2nd Place** — ₹30,000\n🥉 **3rd Place** — ₹20,000\n\n🎯 Best UI/UX — ₹5,000\n🔬 Most Innovative — ₹5,000\n🌟 Best Pitch — ₹5,000`,
+    a: `🏆 **Prize Pool: ₹1,00,000+**\n\n🥇 **1st Place** — ₹21,000\n🥈 **2nd Place** — ₹11,000\n🥉 **3rd Place** — ₹7,000\n\n🎯 Best UI/UX — ₹5,000\n🔬 Most Innovative — ₹5,000\n🌟 Best Pitch — ₹5,000`,
   },
   'contact': {
     q: '📞 Contact Us',
-    a: `📞 **Contact Information:**\n\n🏫 **Institute:** ZIBACAR, Pune\n📧 **Email:** Coming Soon\n📱 **Phone:** Coming Soon\n🌐 **Website:** arvr-drab.vercel.app\n\n_(Full contact details coming soon!)_`,
+    a: `📞 **Contact Information:**\n\n🏫 **Institute:**ZIBACAR, Pune\n📧 **Email:** supportzealgameathon@gmail.com\n📱 \n🌐 **Website:** arvrhackthon.vercel.app\n\n`,
   },
 };
 

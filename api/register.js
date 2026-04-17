@@ -20,7 +20,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: '⚠️ All fields including payment screenshot are required.' });
     }
 
-    const existing = await Registration.findOne({ email: email.toLowerCase().trim() });
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Check duplicate
+    const existing = await Registration.findOne({ email: cleanEmail });
     if (existing) {
       return res.status(409).json({ success: false, message: '⚠️ This email is already registered!' });
     }
@@ -29,13 +32,21 @@ export default async function handler(req, res) {
       ? teamMembers
       : (teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
 
-    await new Registration({
-      name, email, phone, branch, collegeName,
-      teamName, teamSize: teamSize || 1,
-      teamMembers: membersArray,
-      paymentScreenshot,
-      status: 'pending',
-    }).save();
+    // Handle race condition — if 2 users register same email at exact same time
+    try {
+      await new Registration({
+        name, email: cleanEmail, phone, branch, collegeName,
+        teamName, teamSize: teamSize || 1,
+        teamMembers: membersArray,
+        paymentScreenshot,
+        status: 'pending',
+      }).save();
+    } catch (saveErr) {
+      if (saveErr.code === 11000) {
+        return res.status(409).json({ success: false, message: '⚠️ This email is already registered!' });
+      }
+      throw saveErr;
+    }
 
     res.status(201).json({ success: true, message: 'Registration submitted! Awaiting admin approval. 🚀' });
   } catch (err) {
@@ -43,4 +54,3 @@ export default async function handler(req, res) {
     res.status(500).json({ success: false, message: '❌ Server error: ' + err.message });
   }
 }
-

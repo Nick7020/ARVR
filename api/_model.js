@@ -23,3 +23,4 @@ const schema = new mongoose.Schema({
 });
 
 export default mongoose.models.Registration || mongoose.model('Registration', schema);
+

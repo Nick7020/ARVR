@@ -139,7 +139,7 @@ export default async function handler(req, res) {
         <td style="text-align:center;padding:8px">
           <p style="font-size:20px;margin:0 0 4px">📅</p>
           <p style="color:rgba(139,92,246,0.5);font-size:8px;letter-spacing:1px;text-transform:uppercase;margin:0 0 2px">DATE</p>
-          <p style="color:#e2e8f0;font-size:11px;font-weight:700;margin:0">22 April 2026</p>
+          <p style="color:#e2e8f0;font-size:11px;font-weight:700;margin:0">23 April 2026</p>
         </td>
         <td style="text-align:center;padding:8px;background:rgba(34,211,238,0.06);border-radius:8px">
           <p style="font-size:20px;margin:0 0 4px">📍</p>
@@ -161,7 +161,7 @@ export default async function handler(req, res) {
     <table cellpadding="0" cellspacing="0">
       ${[
         'Bring this email / QR code to the venue',
-        'Report by 9:00 AM on 22 April 2026',
+        'Report by 9:00 AM on 23 April 2026',
         'Carry your college ID card',
         'Bring your laptop with your game project',
         'Do NOT share your QR code with others',
@@ -226,3 +226,4 @@ export default async function handler(req, res) {
     res.status(500).json({ success: false, message: err.message });
   }
 }
+

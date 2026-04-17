@@ -24,11 +24,11 @@ const QA = {
   },
   'rules': {
     q: '📋 Rules',
-    a: `📜 **Game-o-thon Rules:**\n\n✅ Team size: 1–4 members\n✅ Students only\n✅ Game must be playable\n✅ Game must be original\n✅ Open source assets allowed\n⏱️ Final submission: 20 April\n🎤 Presentation: 22 April`,
+    a: `📜 **Game-o-thon Rules:**\n\n✅ Team size: 1–4 members\n✅ Students only\n✅ Game must be playable\n✅ Game must be original\n✅ Open source assets allowed\n⏱️ Final submission: 20 April\n🎤 Presentation: 23 April`,
   },
   'dates': {
     q: '📅 Important Dates',
-    a: `📅 **Key Dates:**\n\n🚀 **Registration** — Open Now\n⏰ **20 April 2026** — Final Submission\n⚡ **22 April 2026** — Final Presentation\n🏆 **22 April 2026** — Results Announced`,
+    a: `📅 **Key Dates:**\n\n🚀 **Registration** — Open Now\n⏰ **20 April 2026** — Final Submission\n⚡ **23 April 2026** — Final Presentation\n🏆 **23 April 2026** — Results Announced`,
   },
   'prizes': {
     q: '🏆 Prizes',
@@ -376,3 +376,4 @@ export default function Chatbot() {
     </>
   );
 }
+

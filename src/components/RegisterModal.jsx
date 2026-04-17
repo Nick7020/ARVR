@@ -306,3 +306,4 @@ export default function RegisterModal({ onClose }) {
     </motion.div>
   );
 }
+

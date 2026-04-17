@@ -137,7 +137,7 @@ export default function GameOThonLanding() {
         <motion.div className="glass neon-border rounded-3xl p-8 text-center max-w-2xl mx-auto mb-20 card-hover"
           initial={{ scale: 0.8, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ type: 'spring' }}>
           <h3 className="text-3xl md:text-4xl font-black mb-4 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">📅 Final Presentation</h3>
-          <p className="text-2xl md:text-3xl font-mono tracking-widest text-blue-300 glow-cyan">22 April 2026</p>
+          <p className="text-2xl md:text-3xl font-mono tracking-widest text-blue-300 glow-cyan">23 April 2026</p>
         </motion.div>
 
         {/* 6. Footer Organizers */}
@@ -163,4 +163,5 @@ export default function GameOThonLanding() {
     </section>
   );
 }
+
 

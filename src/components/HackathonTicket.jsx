@@ -169,7 +169,7 @@ export default function HackathonTicket({ form, onClose, pending = false }) {
           {/* ── EVENT INFO ── */}
           <div style={{ display:'flex', gap:0, marginBottom:12 }}>
             {[
-              ['📅', 'DATE', '22 April 2026'],
+              ['📅', 'DATE', '23 April 2026'],
               ['📍', 'VENUE', 'Zeal College, Pune'],
               ['⏰', 'TIME', '9:00 AM onwards'],
             ].map(([icon, label, val], i) => (
@@ -224,3 +224,4 @@ export default function HackathonTicket({ form, onClose, pending = false }) {
     </motion.div>
   );
 }
+

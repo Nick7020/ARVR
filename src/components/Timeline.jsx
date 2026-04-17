@@ -3,9 +3,9 @@ import { useRef } from 'react';
 
 const events = [
   { date: 'Registration Open', title: 'Register Your Team', desc: 'Form your team and secure your spot. Individual participation also allowed.', icon: '🚀', color: '#a855f7' },
-  { date: '20 April 2026', title: 'Final Submission', desc: 'Submit your game file, source code, PPT and team details before deadline.', icon: '⏰', color: '#3b82f6' },
-  { date: '22 April 2026', title: 'Final Presentation', desc: '5 min presentation + 2 min Q&A. Bring your laptop. Game must run properly.', icon: '⚡', color: '#22d3ee' },
-  { date: '22 April 2026', title: 'Result Announcement', desc: 'Winners revealed! Prizes, certificates and celebration await.', icon: '🏆', color: '#ec4899' },
+  { date: '21 April 2026', title: 'Final Submission', desc: 'Submit your game file, source code, PPT and team details before deadline.', icon: '⏰', color: '#3b82f6' },
+  { date: '23 April 2026', title: 'Final Presentation', desc: '5 min presentation + 2 min Q&A. Bring your laptop. Game must run properly.', icon: '⚡', color: '#22d3ee' },
+  { date: '23 April 2026', title: 'Result Announcement', desc: 'Winners revealed! Prizes, certificates and celebration await.', icon: '🏆', color: '#ec4899' },
 ];
 
 export default function Timeline() {
@@ -93,3 +93,4 @@ export default function Timeline() {
     </section>
   );
 }
+

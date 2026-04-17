@@ -4,7 +4,7 @@ const sections = [
   {
     icon: '🎮', title: 'Event Overview', color: '#a855f7',
     items: [
-      'Final Presentation: 22 April 2026',
+      'Final Presentation: 23 April 2026',
       'Venue: Zeal College',
       'Theme: Open Theme',
       'Technology: Open',
@@ -15,7 +15,7 @@ const sections = [
     icon: '📅', title: 'Important Dates', color: '#22d3ee',
     items: [
       'Final Submission: 20 April 2026',
-      'Final Presentation: 22 April 2026',
+      'Final Presentation: 23 April 2026',
     ],
   },
   {
@@ -56,7 +56,7 @@ const sections = [
     ],
   },
   {
-    icon: '🎤', title: 'Presentation Rules (22 April)', color: '#6366f1',
+    icon: '🎤', title: 'Presentation Rules (23 April)', color: '#6366f1',
     items: [
       '5 minutes presentation per team',
       '2 minutes Q&A',
@@ -172,3 +172,4 @@ export default function Rules() {
     </section>
   );
 }
+

@@ -13,6 +13,9 @@ import StaffPanel from './components/StaffPanel';
 const isAdmin = window.location.pathname === '/admin';
 const isStaff = window.location.pathname === '/staff';
 
+// Show cursor on admin/staff pages
+if (isAdmin || isStaff) document.body.classList.add('show-cursor');
+
 // Lazy load heavy sections
 const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
 const About    = lazy(() => import('./components/About'));

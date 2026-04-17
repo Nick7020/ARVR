@@ -1,6 +1,8 @@
 import connectDB from './_db.js';
 import Registration from './_model.js';
 
+export const config = { api: { bodyParser: { sizeLimit: '10mb' } } };
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,11 +14,10 @@ export default async function handler(req, res) {
 
   try {
     await connectDB();
+    const { name, email, phone, branch, collegeName, teamName, teamSize, teamMembers, paymentScreenshot } = req.body;
 
-    const { name, email, phone, branch, collegeName, teamName, teamMembers, teamSize } = req.body;
-
-    if (!name || !email || !phone || !branch || !collegeName || !teamName) {
-      return res.status(400).json({ success: false, message: '⚠️ All fields are required.' });
+    if (!name || !email || !phone || !branch || !collegeName || !teamName || !paymentScreenshot) {
+      return res.status(400).json({ success: false, message: '⚠️ All fields including payment screenshot are required.' });
     }
 
     const existing = await Registration.findOne({ email: email.toLowerCase().trim() });
@@ -28,9 +29,15 @@ export default async function handler(req, res) {
       ? teamMembers
       : (teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
 
-    await new Registration({ name, email, phone, branch, collegeName, teamName, teamMembers: membersArray }).save();
+    await new Registration({
+      name, email, phone, branch, collegeName,
+      teamName, teamSize: teamSize || 1,
+      teamMembers: membersArray,
+      paymentScreenshot,
+      status: 'pending',
+    }).save();
 
-    res.status(201).json({ success: true, message: 'Registration successful! See you at the hackathon 🚀' });
+    res.status(201).json({ success: true, message: 'Registration submitted! Awaiting admin approval. 🚀' });
   } catch (err) {
     console.error('Register error:', err);
     res.status(500).json({ success: false, message: '❌ Server error: ' + err.message });

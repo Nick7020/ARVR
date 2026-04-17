@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export default function HackathonTicket({ form, onClose }) {
+export default function HackathonTicket({ form, onClose, pending = false }) {
   const ticketRef  = useRef(null);
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded]   = useState(false);
@@ -50,7 +50,7 @@ export default function HackathonTicket({ form, onClose }) {
 
       <motion.p className="text-purple-400/60 text-xs tracking-[0.3em] uppercase mb-4 z-10 text-center"
         initial={{ opacity:0, y:-10 }} animate={{ opacity:1, y:0 }}>
-        🎟 Your Hackathon Pass is Ready!
+        {pending ? '⏳ Registration Submitted — Pending Approval' : '🎟 Your Hackathon Pass is Ready!'}
       </motion.p>
 
       {/* ══ TICKET ══ */}
@@ -203,7 +203,7 @@ export default function HackathonTicket({ form, onClose }) {
 
       <motion.p className="text-purple-400/40 text-xs mt-3 z-10 text-center"
         initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.7 }}>
-        Save this ticket — bring it on Hackathon Day! 🚀
+        {pending ? 'You\'ll receive an email with your ticket once admin approves! 📧' : 'Save this ticket — bring it on Hackathon Day! 🚀'}
       </motion.p>
     </motion.div>
   );

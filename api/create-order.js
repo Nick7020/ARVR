@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     const { teamSize } = req.body;
     let amount = 50;
     if (teamSize > 1) {
-      amount = 100;
+      amount = 150;
     }
 
     const options = {

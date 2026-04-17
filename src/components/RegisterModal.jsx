@@ -99,7 +99,7 @@ export default function RegisterModal({ onClose }) {
     }
   };
 
-  const fee = teamSize === 1 ? 50 : 100;
+  const fee = teamSize === 1 ? 50 : 150;
   const steps = ['Personal', 'Academic', 'Team', 'Payment', 'Submit'];
 
   if (showTicket) return <HackathonTicket form={{ ...form, teamMembers }} onClose={onClose} pending />;

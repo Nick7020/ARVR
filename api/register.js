@@ -1,5 +1,6 @@
 import connectDB from './_db.js';
 import Registration from './_model.js';
+import { validateEmail } from './_emailValidator.js';
 
 export const config = { api: { bodyParser: { sizeLimit: '10mb' } } };
 
@@ -16,13 +17,20 @@ export default async function handler(req, res) {
     await connectDB();
     const { name, email, phone, branch, collegeName, teamName, teamSize, teamMembers, paymentScreenshot } = req.body;
 
+    // Basic field check
     if (!name || !email || !phone || !branch || !collegeName || !teamName || !paymentScreenshot) {
       return res.status(400).json({ success: false, message: '⚠️ All fields including payment screenshot are required.' });
     }
 
-    const cleanEmail = email.toLowerCase().trim();
+    // ── Email validation (format + MX record) ──
+    const emailCheck = await validateEmail(email);
+    if (!emailCheck.valid) {
+      return res.status(400).json({ success: false, message: `⚠️ ${emailCheck.reason}` });
+    }
 
-    // Check duplicate
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Duplicate check
     const existing = await Registration.findOne({ email: cleanEmail });
     if (existing) {
       return res.status(409).json({ success: false, message: '⚠️ This email is already registered!' });
@@ -32,7 +40,7 @@ export default async function handler(req, res) {
       ? teamMembers
       : (teamMembers || '').split(',').map(m => m.trim()).filter(Boolean);
 
-    // Handle race condition — if 2 users register same email at exact same time
+    // Save with race condition handling
     try {
       await new Registration({
         name, email: cleanEmail, phone, branch, collegeName,
@@ -49,8 +57,9 @@ export default async function handler(req, res) {
     }
 
     res.status(201).json({ success: true, message: 'Registration submitted! Awaiting admin approval. 🚀' });
+
   } catch (err) {
     console.error('Register error:', err);
-    res.status(500).json({ success: false, message: '❌ Server error: ' + err.message });
+    res.status(500).json({ success: false, message: '❌ Server error. Please try again.' });
   }
 }

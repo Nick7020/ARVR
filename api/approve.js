@@ -3,7 +3,19 @@ import Registration from './_model.js';
 import nodemailer from 'nodemailer';
 import QRCode from 'qrcode';
 
-const transporter = nodemailer.createTransport({
+/* ── Email with retry (2 attempts) ── */
+async function sendMailWithRetry(transporter, options, attempts = 2) {
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      await sendMailWithRetry(transporter, options);
+      return;
+    } catch (err) {
+      console.error(`Email attempt ${i} failed:`, err.message);
+      if (i === attempts) throw err;
+      await new Promise(r => setTimeout(r, 1500)); // wait 1.5s before retry
+    }
+  }
+}
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER,
@@ -54,7 +66,7 @@ export default async function handler(req, res) {
       // Extract base64 for email attachment
       const qrBase64Data = qrCodeBase64.replace(/^data:image\/png;base64,/, '');
 
-      await transporter.sendMail({
+      await sendMailWithRetry(transporter, {
         from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
         to: reg.email,
         subject: '🎮 Registration Approved — Game-o-thon 2K26 | Your Entry Pass',
@@ -199,7 +211,7 @@ export default async function handler(req, res) {
       reg.rejectionReason = reason || 'Payment verification failed.';
       await reg.save();
 
-      await transporter.sendMail({
+      await sendMailWithRetry(transporter, {
         from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
         to: reg.email,
         subject: '❌ Game-o-thon 2K26 — Registration Update',
@@ -226,4 +238,5 @@ export default async function handler(req, res) {
     res.status(500).json({ success: false, message: err.message });
   }
 }
+
 

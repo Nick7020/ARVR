@@ -7,15 +7,17 @@ import QRCode from 'qrcode';
 async function sendMailWithRetry(transporter, options, attempts = 2) {
   for (let i = 1; i <= attempts; i++) {
     try {
-      await sendMailWithRetry(transporter, options);
+      await transporter.sendMail(options);
       return;
     } catch (err) {
       console.error(`Email attempt ${i} failed:`, err.message);
       if (i === attempts) throw err;
-      await new Promise(r => setTimeout(r, 1500)); // wait 1.5s before retry
+      await new Promise(r => setTimeout(r, 1500));
     }
   }
 }
+
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.GMAIL_USER,

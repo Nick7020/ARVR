@@ -20,7 +20,7 @@ const QA = {
   },
   'coordinator': {
     q: '👤 Student Coordinators',
-    a: `👨‍💻 **Student Coordinators:**\n\n🔹 **Coordinator 1**\n   Name: Coming Soon\n   📱 Contact: Coming Soon\n\n🔹 **Coordinator 2**\n   Mustafa Pinjari: 8799849225Coming Soon\n   📱 Contact: Coming Soon\n\n_(Details will be updated soon!)_`,
+    a: `👨‍💻 **Student Coordinators:**\n\n🔹 **Coordinator 1**\n   Name: Sanika Sawant\n   📱 Contact: 8308718928\n\n🔹 ** **Coordinator 2**\n   Name: Nikhil Mistari\n   📱 Contact: 7020389525\n\n🔹 **Coordinator 3**\n   Mustafa Pinjari: 8799849225 )_`,
   },
   'rules': {
     q: '📋 Rules',

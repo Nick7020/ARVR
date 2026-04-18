@@ -16,13 +16,17 @@ async function sendMailWithRetry(transporter, options, attempts = 2) {
   }
 }
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+  });
+}
 
 function generateUniqueId() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -64,7 +68,7 @@ export default async function handler(req, res) {
 
       const qrBase64Data = qrCodeBase64.replace(/^data:image\/png;base64,/, '');
 
-      await sendMailWithRetry(transporter, {
+      await sendMailWithRetry(createTransporter(), {
         from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
         to: reg.email,
         subject: 'Registration Approved - Game-o-thon 2K26 | Your Entry Pass',
@@ -178,7 +182,7 @@ export default async function handler(req, res) {
       reg.rejectionReason = reason || 'Payment verification failed.';
       await reg.save();
 
-      await sendMailWithRetry(transporter, {
+      await sendMailWithRetry(createTransporter(), {
         from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
         to: reg.email,
         subject: 'Game-o-thon 2K26 - Registration Update',

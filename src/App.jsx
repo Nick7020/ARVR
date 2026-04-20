@@ -23,7 +23,7 @@ export default function App() {
   const [loaded, setLoaded]       = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  if (isAdmin) return <AdminPage />;
+  if (isAdmin) return <><CursorGlow /><AdminPage /></>;
 
   return (
     <>

@@ -8,15 +8,8 @@ import Footer from './components/Footer';
 import RegisterModal from './components/RegisterModal';
 import AdminPage from './components/AdminPage';
 import Chatbot from './components/Chatbot';
-import StaffPanel from './components/StaffPanel';
 
-const isAdmin = window.location.pathname === '/admin';
-const isStaff = window.location.pathname === '/staff';
-
-// Show cursor on admin/staff pages
-if (isAdmin || isStaff) document.body.classList.add('show-cursor');
-
-// Lazy load heavy sections
+// Lazy load heavy sections — NOT Hero (must render first)
 const ParticlesBackground = lazy(() => import('./components/ParticlesBackground'));
 const About    = lazy(() => import('./components/About'));
 const Tracks   = lazy(() => import('./components/Tracks'));
@@ -24,12 +17,13 @@ const Timeline = lazy(() => import('./components/Timeline'));
 const Prizes   = lazy(() => import('./components/Prizes'));
 const Rules    = lazy(() => import('./components/Rules'));
 
+const isAdmin = window.location.pathname === '/admin';
+
 export default function App() {
   const [loaded, setLoaded]       = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   if (isAdmin) return <AdminPage />;
-  if (isStaff) return <StaffPanel />;
 
   return (
     <>
@@ -42,7 +36,7 @@ export default function App() {
             <Suspense fallback={null}><ParticlesBackground /></Suspense>
             <div className="fixed inset-0 z-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139,92,246,0.15) 0%, transparent 60%)' }} />
-{/* <GameOThonLanding />   */}
+
             <Navbar onRegister={() => setShowModal(true)} />
 
             <main className="relative z-10">
@@ -68,4 +62,3 @@ export default function App() {
     </>
   );
 }
-

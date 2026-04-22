@@ -45,6 +45,7 @@ export default function AdminPage() {
   const [actionLoading, setActionLoading] = useState('');
   const [rejectReason, setRejectReason]   = useState('');
   const [showReject, setShowReject]       = useState(false);
+  const [staffFilter, setStaffFilter]     = useState('all');
 
   const fetchData = async (status = tab) => {
     setLoading(true);
@@ -133,8 +134,13 @@ export default function AdminPage() {
 
   const filtered = data.filter(r =>
     [r.name,r.email,r.teamName,r.collegeName,r.uniqueId||''].join(' ').toLowerCase().includes(search.toLowerCase())
+  ).filter(r =>
+    staffFilter === 'all' ? true : r.checkedInBy === staffFilter
   );
   const checkedInCount = data.filter(r => r.checkedIn).length;
+  const staffCounts = ['staff1','staff2','staff3'].map(s => ({
+    name: s, count: data.filter(r => r.checkedInBy === s).length
+  }));
 
   if (!auth) return (
     <div className="min-h-screen flex items-center justify-center px-4"
@@ -188,7 +194,8 @@ export default function AdminPage() {
         </motion.div>
 
         {tab==='approved' && data.length>0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
+          <>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
             {[['Total Approved',data.length,'#a855f7'],['Checked In',checkedInCount,'#10b981'],['Not Checked In',data.length-checkedInCount,'#f59e0b']].map(([label,val,color]) => (
               <div key={label} className="rounded-xl p-4 text-center" style={{ background:'rgba(139,92,246,0.06)', border:`1px solid ${color}30` }}>
                 <div className="text-2xl font-black" style={{ color }}>{val}</div>
@@ -196,6 +203,21 @@ export default function AdminPage() {
               </div>
             ))}
           </div>
+          <div className="flex gap-2 mb-5 flex-wrap">
+            <button onClick={() => setStaffFilter('all')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${staffFilter==='all'?'text-white':'text-gray-500'}`}
+              style={{ background:staffFilter==='all'?'linear-gradient(135deg,#00f0ff,#7000ff)':'rgba(139,92,246,0.08)', border:'1px solid rgba(139,92,246,0.2)' }}>
+              👥 All Staff
+            </button>
+            {staffCounts.map(({name,count}) => (
+              <button key={name} onClick={() => setStaffFilter(name)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${staffFilter===name?'text-white':'text-gray-500'}`}
+                style={{ background:staffFilter===name?'linear-gradient(135deg,#00f0ff,#7000ff)':'rgba(139,92,246,0.08)', border:'1px solid rgba(139,92,246,0.2)' }}>
+                {name} ({count})
+              </button>
+            ))}
+          </div>
+          </>
         )}
 
         <div className="flex gap-2 mb-5 flex-wrap">

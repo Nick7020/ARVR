@@ -1,7 +1,7 @@
 import connectDB from './_db.js';
 import Registration from './_model.js';
 
-const LAB_CAPACITY = 40; // max per lab
+const LAB_CAPACITY = 25; // max per lab
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');

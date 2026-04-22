@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     await connectDB();
-    const { uniqueId, staffUsername } = req.body;
+    const { uniqueId, staffUsername, labNo } = req.body;
 
     if (!uniqueId) return res.status(400).json({ success: false, message: 'No QR data provided.' });
 
@@ -36,6 +36,7 @@ export default async function handler(req, res) {
     reg.checkedIn   = true;
     reg.checkedInAt = new Date();
     reg.checkedInBy = staffUsername || 'Staff';
+    reg.labNo       = labNo;
     await reg.save();
 
     const istTime = new Date(reg.checkedInAt).toLocaleString('en-IN', {
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
         team:        reg.teamName,
         members:     reg.teamMembers,
         uniqueId:    reg.uniqueId,
-        checkedInAt: reg.checkedInAt,
+        labNo:       reg.labNo,
         checkedInBy: reg.checkedInBy,
       },
     });

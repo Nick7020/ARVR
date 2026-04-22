@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
   checkedIn:         { type: Boolean, default: false },
   checkedInAt:       { type: Date },
   checkedInBy:       { type: String, default: '' },
+  labNo:             { type: Number, default: null },
   createdAt:         { type: Date, default: Date.now },
   approvedAt:        { type: Date },
 });

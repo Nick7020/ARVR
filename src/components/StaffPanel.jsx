@@ -192,7 +192,16 @@ export default function StaffPanel() {
 
         {/* Lab Stats */}
         {labStats.length > 0 && (
-          <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-gray-500 text-xs uppercase tracking-widest">Lab Capacity</p>
+            <button onClick={fetchLabStats}
+              className="px-3 py-1 rounded-lg text-xs font-bold text-cyan-300 transition-colors"
+              style={{ background:'rgba(34,211,238,0.1)', border:'1px solid rgba(34,211,238,0.2)' }}>
+              🔄 Refresh
+            </button>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
             {labStats.map(({ lab, filled, capacity, remaining }) => {
               const pct = Math.min((filled / capacity) * 100, 100);
               const color = remaining === 0 ? '#ef4444' : remaining <= 10 ? '#f59e0b' : '#10b981';
@@ -209,6 +218,7 @@ export default function StaffPanel() {
                 </div>
               );
             })}
+          </div>
           </div>
         )}
 

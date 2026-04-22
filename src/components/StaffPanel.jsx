@@ -16,16 +16,28 @@ export default function StaffPanel() {
   const [loading, setLoading]       = useState(false);
   const [mode, setMode]             = useState('camera');
   const [checkedInList, setCheckedInList] = useState([]);
-  const [pendingScan, setPendingScan] = useState(null); // { rawData } waiting for lab
+  const [pendingScan, setPendingScan] = useState(null);
   const [selectedLab, setSelectedLab] = useState(null);
+  const [labStats, setLabStats] = useState([]);
   const html5QrRef  = useRef(null);
   const cooldownRef = useRef(false);
+
+  const fetchLabStats = async () => {
+    try {
+      const res = await fetch(`${API}/api/lab-stats`);
+      const data = await res.json();
+      if (data.success) setLabStats(data.labs);
+    } catch {}
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem('staff_session');
     if (saved) setStaff(JSON.parse(saved));
     const list = localStorage.getItem('checkedin_list');
     if (list) setCheckedInList(JSON.parse(list));
+    fetchLabStats();
+    const interval = setInterval(fetchLabStats, 15000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => { return () => stopScanner(); }, []);
@@ -69,6 +81,7 @@ export default function StaffPanel() {
           localStorage.setItem('checkedin_list', JSON.stringify(updated));
           return updated;
         });
+        fetchLabStats();
         await stopScanner();
       }
     } catch { setResult({ success: false, message: 'Server error. Try again.' }); }
@@ -176,6 +189,28 @@ export default function StaffPanel() {
             </button>
           </div>
         </div>
+
+        {/* Lab Stats */}
+        {labStats.length > 0 && (
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            {labStats.map(({ lab, filled, capacity, remaining }) => {
+              const pct = Math.min((filled / capacity) * 100, 100);
+              const color = remaining === 0 ? '#ef4444' : remaining <= 10 ? '#f59e0b' : '#10b981';
+              return (
+                <div key={lab} className="rounded-2xl p-3 text-center"
+                  style={{ background: 'rgba(15,5,40,0.97)', border: `1px solid ${color}40` }}>
+                  <p className="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Lab {lab}</p>
+                  <p className="font-black text-2xl" style={{ color }}>{remaining}</p>
+                  <p className="text-gray-500 text-[10px] mb-2">seats left</p>
+                  <div className="w-full h-1.5 rounded-full bg-gray-800 overflow-hidden">
+                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: color }} />
+                  </div>
+                  <p className="text-gray-600 text-[10px] mt-1">{filled}/{capacity}</p>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Mode toggle */}
         <div className="flex gap-2 mb-4">
@@ -326,19 +361,27 @@ export default function StaffPanel() {
               <h3 className="text-white font-black text-xl mb-1 text-center">Assign Lab</h3>
               <p className="text-gray-400 text-sm text-center mb-6">Select presentation lab for this participant</p>
               <div className="grid grid-cols-3 gap-3 mb-6">
-                {LABS.map(lab => (
-                  <motion.button key={lab} onClick={() => setSelectedLab(lab)}
-                    className="py-6 rounded-2xl font-black text-2xl transition-all"
-                    style={{
-                      background: selectedLab === lab ? 'linear-gradient(135deg,#a855f7,#3b82f6)' : 'rgba(139,92,246,0.08)',
-                      border: `2px solid ${selectedLab === lab ? '#a855f7' : 'rgba(139,92,246,0.2)'}`,
-                      color: selectedLab === lab ? '#fff' : '#9ca3af',
-                      boxShadow: selectedLab === lab ? '0 0 20px rgba(168,85,247,0.4)' : 'none',
-                    }}
-                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    {lab}
-                  </motion.button>
-                ))}
+                {LABS.map(lab => {
+                  const stat = labStats.find(s => s.lab === lab);
+                  const remaining = stat ? stat.remaining : '?';
+                  const full = stat && stat.remaining === 0;
+                  return (
+                    <motion.button key={lab} onClick={() => !full && setSelectedLab(lab)}
+                      className="py-4 rounded-2xl font-black transition-all flex flex-col items-center gap-1"
+                      style={{
+                        background: selectedLab === lab ? 'linear-gradient(135deg,#a855f7,#3b82f6)' : full ? 'rgba(239,68,68,0.08)' : 'rgba(139,92,246,0.08)',
+                        border: `2px solid ${selectedLab === lab ? '#a855f7' : full ? 'rgba(239,68,68,0.3)' : 'rgba(139,92,246,0.2)'}`,
+                        color: selectedLab === lab ? '#fff' : full ? '#ef4444' : '#9ca3af',
+                        boxShadow: selectedLab === lab ? '0 0 20px rgba(168,85,247,0.4)' : 'none',
+                        opacity: full ? 0.6 : 1,
+                        cursor: full ? 'not-allowed' : 'pointer',
+                      }}
+                      whileHover={!full ? { scale: 1.05 } : {}} whileTap={!full ? { scale: 0.95 } : {}}>
+                      <span className="text-2xl">{lab}</span>
+                      <span className="text-[10px] font-bold">{full ? 'FULL' : `${remaining} left`}</span>
+                    </motion.button>
+                  );
+                })}
               </div>
               <div className="flex gap-3">
                 <button onClick={() => { setPendingScan(null); setSelectedLab(null); cooldownRef.current = false; if (mode === 'camera') startScanner(); }}

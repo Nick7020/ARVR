@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Html5Qrcode } from 'html5-qrcode';
 
 const API = import.meta.env.VITE_API_URL || 'https://arvrhackthon.vercel.app';
-const LABS = [1, 2, 3];
 
 export default function StaffPanel() {
   const [staff, setStaff]           = useState(null);
@@ -16,28 +15,14 @@ export default function StaffPanel() {
   const [loading, setLoading]       = useState(false);
   const [mode, setMode]             = useState('camera');
   const [checkedInList, setCheckedInList] = useState([]);
-  const [pendingScan, setPendingScan] = useState(null);
-  const [selectedLab, setSelectedLab] = useState(null);
-  const [labStats, setLabStats] = useState([]);
   const html5QrRef  = useRef(null);
   const cooldownRef = useRef(false);
-
-  const fetchLabStats = async () => {
-    try {
-      const res = await fetch(`${API}/api/lab-stats`);
-      const data = await res.json();
-      if (data.success) setLabStats(data.labs);
-    } catch {}
-  };
 
   useEffect(() => {
     const saved = localStorage.getItem('staff_session');
     if (saved) setStaff(JSON.parse(saved));
     const list = localStorage.getItem('checkedin_list');
     if (list) setCheckedInList(JSON.parse(list));
-    fetchLabStats();
-    const interval = setInterval(fetchLabStats, 15000);
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => { return () => stopScanner(); }, []);
@@ -57,7 +42,9 @@ export default function StaffPanel() {
     finally { setLoading(false); }
   };
 
-  const doCheckin = async (rawData, labNo) => {
+  const doCheckin = async (rawData) => {
+    if (loading || cooldownRef.current) return;
+    cooldownRef.current = true;
     setLoading(true); setResult(null);
     try {
       let uniqueId = rawData.trim();
@@ -65,7 +52,7 @@ export default function StaffPanel() {
 
       const res  = await fetch(`${API}/api/checkin`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uniqueId, staffUsername: staff.username, labNo }),
+        body: JSON.stringify({ uniqueId, staffUsername: staff.username }),
       });
       const data = await res.json();
       setResult(data);
@@ -73,7 +60,6 @@ export default function StaffPanel() {
       if (data.success && data.data) {
         const entry = {
           ...data.data,
-          labNo,
           time: new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }),
         };
         setCheckedInList(prev => {
@@ -81,26 +67,13 @@ export default function StaffPanel() {
           localStorage.setItem('checkedin_list', JSON.stringify(updated));
           return updated;
         });
-        fetchLabStats();
         await stopScanner();
       }
     } catch { setResult({ success: false, message: 'Server error. Try again.' }); }
-    finally { setLoading(false); setTimeout(() => { cooldownRef.current = false; }, 3000); }
-  };
-
-  // Called when QR scanned or manual submitted — show lab picker first
-  const onScanSuccess = (rawData) => {
-    if (loading || cooldownRef.current) return;
-    cooldownRef.current = true;
-    stopScanner();
-    setPendingScan(rawData);
-    setSelectedLab(null);
-  };
-
-  const confirmCheckin = () => {
-    if (!selectedLab) return;
-    doCheckin(pendingScan, selectedLab);
-    setPendingScan(null);
+    finally {
+      setLoading(false);
+      setTimeout(() => { cooldownRef.current = false; }, 3000);
+    }
   };
 
   const startScanner = async () => {
@@ -113,7 +86,7 @@ export default function StaffPanel() {
       if (!cameras?.length) { setResult({ success: false, message: 'No camera found.' }); setScanning(false); return; }
       const cam = cameras.find(c => c.label.toLowerCase().includes('back')) || cameras[cameras.length - 1];
       await qr.start(cam.id, { fps: 5, qrbox: { width: 220, height: 220 } },
-        (decodedText) => { if (!cooldownRef.current) onScanSuccess(decodedText); }, () => {});
+        (decodedText) => { if (!cooldownRef.current) doCheckin(decodedText); }, () => {});
     } catch (err) {
       setResult({ success: false, message: `Camera error: ${err.message || 'Allow camera permission.'}` });
       setScanning(false);
@@ -131,7 +104,7 @@ export default function StaffPanel() {
   const handleManual = async e => {
     e.preventDefault();
     if (!manualId.trim()) return;
-    onScanSuccess(manualId.trim());
+    await doCheckin(manualId.trim());
     setManualId('');
   };
 
@@ -189,38 +162,6 @@ export default function StaffPanel() {
             </button>
           </div>
         </div>
-
-        {/* Lab Stats */}
-        {labStats.length > 0 && (
-          <div className="mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-gray-500 text-xs uppercase tracking-widest">Lab Capacity</p>
-            <button onClick={fetchLabStats}
-              className="px-3 py-1 rounded-lg text-xs font-bold text-cyan-300 transition-colors"
-              style={{ background:'rgba(34,211,238,0.1)', border:'1px solid rgba(34,211,238,0.2)' }}>
-              🔄 Refresh
-            </button>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            {labStats.map(({ lab, filled, capacity, remaining }) => {
-              const pct = Math.min((filled / capacity) * 100, 100);
-              const color = remaining === 0 ? '#ef4444' : remaining <= 10 ? '#f59e0b' : '#10b981';
-              return (
-                <div key={lab} className="rounded-2xl p-3 text-center"
-                  style={{ background: 'rgba(15,5,40,0.97)', border: `1px solid ${color}40` }}>
-                  <p className="text-gray-400 text-[10px] uppercase tracking-widest mb-1">Lab {lab}</p>
-                  <p className="font-black text-2xl" style={{ color }}>{remaining}</p>
-                  <p className="text-gray-500 text-[10px] mb-2">seats left</p>
-                  <div className="w-full h-1.5 rounded-full bg-gray-800 overflow-hidden">
-                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: color }} />
-                  </div>
-                  <p className="text-gray-600 text-[10px] mt-1">{filled}/{capacity}</p>
-                </div>
-              );
-            })}
-          </div>
-          </div>
-        )}
 
         {/* Mode toggle */}
         <div className="flex gap-2 mb-4">
@@ -311,9 +252,6 @@ export default function StaffPanel() {
                       <p className="text-white font-bold text-lg">{result.data.name}</p>
                       <p className="text-gray-300 text-sm">🏆 {result.data.team}</p>
                       <p className="text-gray-400 text-sm">🏫 {result.data.college}</p>
-                      {result.data.labNo && (
-                        <p className="text-purple-400 font-bold text-base">🔬 Lab {result.data.labNo} — Presentation #{result.data.presentationNo}</p>
-                      )}
                       <p className="text-cyan-400 text-xs font-mono">{result.data.uniqueId}</p>
                     </div>
                   )}
@@ -349,7 +287,6 @@ export default function StaffPanel() {
                   </div>
                   <div className="text-right flex-shrink-0 ml-3">
                     <p className="text-green-400 text-xs font-bold">{p.time}</p>
-                    {p.labNo && <p className="text-purple-400 text-xs font-bold">Lab {p.labNo} — P#{p.presentationNo}</p>}
                     <p className="text-gray-600 text-[10px]">by {staff.username}</p>
                   </div>
                 </motion.div>
@@ -358,59 +295,6 @@ export default function StaffPanel() {
           </motion.div>
         )}
       </div>
-
-      {/* Lab Selection Modal */}
-      <AnimatePresence>
-        {pendingScan && (
-          <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)' }}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="w-full max-w-sm rounded-2xl p-6"
-              style={{ background: 'rgba(15,5,40,0.98)', border: '1px solid rgba(139,92,246,0.4)', boxShadow: '0 0 40px rgba(139,92,246,0.3)' }}
-              initial={{ scale: 0.85, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.85, y: 30 }}>
-              <h3 className="text-white font-black text-xl mb-1 text-center">Assign Lab</h3>
-              <p className="text-gray-400 text-sm text-center mb-6">Select presentation lab for this participant</p>
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                {LABS.map(lab => {
-                  const stat = labStats.find(s => s.lab === lab);
-                  const remaining = stat ? stat.remaining : '?';
-                  const nextNo = stat ? stat.nextPresentationNo : '?';
-                  const full = stat && stat.remaining === 0;
-                  return (
-                    <motion.button key={lab} onClick={() => !full && setSelectedLab(lab)}
-                      className="py-4 rounded-2xl font-black transition-all flex flex-col items-center gap-1"
-                      style={{
-                        background: selectedLab === lab ? 'linear-gradient(135deg,#a855f7,#3b82f6)' : full ? 'rgba(239,68,68,0.08)' : 'rgba(139,92,246,0.08)',
-                        border: `2px solid ${selectedLab === lab ? '#a855f7' : full ? 'rgba(239,68,68,0.3)' : 'rgba(139,92,246,0.2)'}`,
-                        color: selectedLab === lab ? '#fff' : full ? '#ef4444' : '#9ca3af',
-                        boxShadow: selectedLab === lab ? '0 0 20px rgba(168,85,247,0.4)' : 'none',
-                        opacity: full ? 0.6 : 1,
-                        cursor: full ? 'not-allowed' : 'pointer',
-                      }}
-                      whileHover={!full ? { scale: 1.05 } : {}} whileTap={!full ? { scale: 0.95 } : {}}>
-                      <span className="text-2xl">{lab}</span>
-                      <span className="text-[10px] font-bold">{full ? 'FULL' : `${remaining} left`}</span>
-                      {!full && <span className="text-[10px] opacity-70">Next P#{nextNo}</span>}
-                    </motion.button>
-                  );
-                })}
-              </div>
-              <div className="flex gap-3">
-                <button onClick={() => { setPendingScan(null); setSelectedLab(null); cooldownRef.current = false; if (mode === 'camera') startScanner(); }}
-                  className="flex-1 py-3 rounded-xl font-bold text-gray-400 text-sm border border-gray-700 hover:border-gray-500 transition-colors">
-                  Cancel
-                </button>
-                <motion.button onClick={confirmCheckin} disabled={!selectedLab || loading}
-                  className="flex-1 py-3 rounded-xl font-black text-white text-sm"
-                  style={{ background: selectedLab ? 'linear-gradient(135deg,#16a34a,#15803d)' : 'rgba(255,255,255,0.05)', opacity: selectedLab ? 1 : 0.4 }}
-                  whileHover={selectedLab ? { scale: 1.02 } : {}} whileTap={selectedLab ? { scale: 0.97 } : {}}>
-                  {loading ? 'Checking in...' : '✅ Confirm'}
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

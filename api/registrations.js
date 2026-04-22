@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     await connectDB();
     const { status } = req.query;
     const filter = status && status !== 'all' ? { status } : {};
-    const data = await Registration.find(filter).sort({ createdAt: -1 });
+    const data = await Registration.find(filter).select('-paymentScreenshot -qrCode').sort({ createdAt: -1 });
     res.json({ success: true, count: data.length, data });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

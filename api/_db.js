@@ -9,6 +9,9 @@ export default async function connectDB() {
     cached.promise = mongoose.connect(process.env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
+    }).catch(err => {
+      cached.promise = null;
+      throw err;
     });
   }
   cached.conn = await cached.promise;

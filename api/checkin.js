@@ -56,12 +56,13 @@ export default async function handler(req, res) {
       hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
     });
 
-    // Send check-in confirmation email (non-blocking)
-    transporter.sendMail({
-      from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
-      to: reg.email,
-      subject: 'Your Lab & Presentation Number - Game-o-thon 2K26',
-      html: `<div style="font-family:Arial,sans-serif;background:#06001a;color:#e2e8f0;padding:32px;max-width:520px;margin:0 auto;border-radius:16px;border:1px solid rgba(139,92,246,0.4)">
+    // Send check-in confirmation email
+    try {
+      await transporter.sendMail({
+        from: `"Game-o-thon 2K26" <${process.env.GMAIL_USER}>`,
+        to: reg.email,
+        subject: 'Your Lab & Presentation Number - Game-o-thon 2K26',
+        html: `<div style="font-family:Arial,sans-serif;background:#06001a;color:#e2e8f0;padding:32px;max-width:520px;margin:0 auto;border-radius:16px;border:1px solid rgba(139,92,246,0.4)">
         <div style="height:4px;background:linear-gradient(90deg,#a855f7,#3b82f6,#22d3ee);border-radius:4px;margin-bottom:24px"></div>
         <h2 style="color:#a855f7;margin:0 0 4px">Game-o-thon 2K26</h2>
         <p style="color:rgba(255,255,255,0.5);font-size:12px;margin:0 0 24px">ZIBACAR &middot; 23 April 2026</p>
@@ -84,7 +85,10 @@ export default async function handler(req, res) {
         </div>
         <p style="color:rgba(139,92,246,0.4);font-size:10px;text-align:center;margin:0">&copy; 2026 Game-o-thon 2K26 &middot; ZIBACAR</p>
       </div>`,
-    }).catch(err => console.error('Checkin email error:', err.message));
+      });
+    } catch (mailErr) {
+      console.error('Checkin email error:', mailErr.message);
+    }
 
     res.json({
       success: true,

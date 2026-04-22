@@ -17,13 +17,17 @@ const Timeline = lazy(() => import('./components/Timeline'));
 const Prizes   = lazy(() => import('./components/Prizes'));
 const Rules    = lazy(() => import('./components/Rules'));
 
+import StaffPanel from './components/StaffPanel';
+
 const isAdmin = window.location.pathname === '/admin';
+const isStaff = window.location.pathname === '/staff';
 
 export default function App() {
   const [loaded, setLoaded]       = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   if (isAdmin) return <><CursorGlow /><AdminPage /></>;
+  if (isStaff) return <><CursorGlow /><StaffPanel /></>;
 
   return (
     <>

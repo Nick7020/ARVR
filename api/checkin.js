@@ -37,6 +37,9 @@ export default async function handler(req, res) {
     reg.checkedInAt = new Date();
     reg.checkedInBy = staffUsername || 'Staff';
     reg.labNo       = labNo;
+    // Auto-assign next presentation number for this lab
+    const lastInLab = await Registration.findOne({ labNo, checkedIn: true }).sort({ presentationNo: -1 });
+    reg.presentationNo = lastInLab?.presentationNo ? lastInLab.presentationNo + 1 : 1;
     await reg.save();
 
     const istTime = new Date(reg.checkedInAt).toLocaleString('en-IN', {
@@ -56,7 +59,8 @@ export default async function handler(req, res) {
         team:        reg.teamName,
         members:     reg.teamMembers,
         uniqueId:    reg.uniqueId,
-        labNo:       reg.labNo,
+        labNo:          reg.labNo,
+        presentationNo: reg.presentationNo,
         checkedInBy: reg.checkedInBy,
       },
     });

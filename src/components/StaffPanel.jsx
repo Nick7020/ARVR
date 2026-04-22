@@ -312,7 +312,7 @@ export default function StaffPanel() {
                       <p className="text-gray-300 text-sm">🏆 {result.data.team}</p>
                       <p className="text-gray-400 text-sm">🏫 {result.data.college}</p>
                       {result.data.labNo && (
-                        <p className="text-purple-400 text-sm font-bold">🔬 Lab {result.data.labNo}</p>
+                        <p className="text-purple-400 font-bold text-base">🔬 Lab {result.data.labNo} — Presentation #{result.data.presentationNo}</p>
                       )}
                       <p className="text-cyan-400 text-xs font-mono">{result.data.uniqueId}</p>
                     </div>
@@ -349,7 +349,7 @@ export default function StaffPanel() {
                   </div>
                   <div className="text-right flex-shrink-0 ml-3">
                     <p className="text-green-400 text-xs font-bold">{p.time}</p>
-                    {p.labNo && <p className="text-purple-400 text-xs font-bold">Lab {p.labNo}</p>}
+                    {p.labNo && <p className="text-purple-400 text-xs font-bold">Lab {p.labNo} — P#{p.presentationNo}</p>}
                     <p className="text-gray-600 text-[10px]">by {staff.username}</p>
                   </div>
                 </motion.div>
@@ -374,6 +374,7 @@ export default function StaffPanel() {
                 {LABS.map(lab => {
                   const stat = labStats.find(s => s.lab === lab);
                   const remaining = stat ? stat.remaining : '?';
+                  const nextNo = stat ? stat.nextPresentationNo : '?';
                   const full = stat && stat.remaining === 0;
                   return (
                     <motion.button key={lab} onClick={() => !full && setSelectedLab(lab)}
@@ -389,6 +390,7 @@ export default function StaffPanel() {
                       whileHover={!full ? { scale: 1.05 } : {}} whileTap={!full ? { scale: 0.95 } : {}}>
                       <span className="text-2xl">{lab}</span>
                       <span className="text-[10px] font-bold">{full ? 'FULL' : `${remaining} left`}</span>
+                      {!full && <span className="text-[10px] opacity-70">Next P#{nextNo}</span>}
                     </motion.button>
                   );
                 })}

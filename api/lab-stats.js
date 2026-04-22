@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     const labs = [1, 2, 3].map(n => {
       const found = counts.find(c => c._id === n);
       const filled = found ? found.count : 0;
-      return { lab: n, filled, capacity: LAB_CAPACITY, remaining: LAB_CAPACITY - filled };
+      return { lab: n, filled, capacity: LAB_CAPACITY, remaining: LAB_CAPACITY - filled, nextPresentationNo: filled + 1 };
     });
 
     res.json({ success: true, labs });
